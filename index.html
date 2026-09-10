@@ -1,0 +1,3455 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>English Expressions</title>
+
+<style>
+:root {
+    --pink: #FF4E6B;
+    --red: #FF0436;
+
+    --background: #151619;
+    --background-2: #191A1E;
+    --background-3: #202126;
+
+    --glass: rgba(255,255,255,0.065);
+    --glass-strong: rgba(255,255,255,0.09);
+    --glass-border: rgba(255,255,255,0.10);
+
+    --white: #F7F7F8;
+    --white-soft: rgba(247,247,248,0.72);
+    --white-muted: rgba(247,247,248,0.48);
+    --white-faint: rgba(247,247,248,0.28);
+
+    --radius-xl: 30px;
+    --radius-lg: 25px;
+    --radius-md: 20px;
+    --radius-sm: 16px;
+    --radius-pill: 999px;
+
+    --shadow-large:
+        0 28px 70px rgba(0,0,0,0.42),
+        0 8px 24px rgba(0,0,0,0.20);
+
+    --shadow-card:
+        0 14px 35px rgba(0,0,0,0.20);
+}
+
+* {
+    box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
+}
+
+html,
+body {
+    margin: 0;
+    min-height: 100%;
+}
+
+body {
+    font-family:
+        -apple-system,
+        BlinkMacSystemFont,
+        "SF Pro Display",
+        "SF Pro Text",
+        "Pretendard",
+        "Noto Sans KR",
+        sans-serif;
+
+    color: var(--white);
+
+    background:
+        linear-gradient(
+            145deg,
+            var(--background),
+            var(--background-2)
+        );
+
+    background-attachment: fixed;
+
+    letter-spacing: -0.02em;
+}
+
+/* =========================================================
+   APP
+   ========================================================= */
+
+.app {
+    width: min(920px, calc(100% - 28px));
+
+    margin: 24px auto;
+
+    min-height: calc(100vh - 48px);
+
+    position: relative;
+
+    background:
+        rgba(255,255,255,0.025);
+
+    border:
+        1px solid
+        rgba(255,255,255,0.075);
+
+    border-radius: 34px;
+
+    box-shadow: var(--shadow-large);
+
+    overflow: hidden;
+
+    backdrop-filter:
+        blur(34px)
+        saturate(115%);
+
+    -webkit-backdrop-filter:
+        blur(34px)
+        saturate(115%);
+}
+
+.app::before {
+    content: "";
+
+    position: absolute;
+
+    inset: 0;
+
+    pointer-events: none;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(255,255,255,0.025),
+            transparent 42%
+        );
+
+    z-index: 0;
+}
+
+.app-content {
+    position: relative;
+    z-index: 1;
+}
+
+
+/* =========================================================
+   COMPLETION CELEBRATION
+   ========================================================= */
+
+.completion-effect {
+    position: absolute;
+
+    inset: 0;
+
+    z-index: 50;
+
+    pointer-events: none;
+
+    overflow: hidden;
+
+    opacity: 0;
+}
+
+.completion-effect.playing {
+    opacity: 1;
+}
+
+.completion-core {
+    position: absolute;
+
+    left: 50%;
+    top: 50%;
+
+    width: 22px;
+    height: 22px;
+
+    transform:
+        translate(-50%, -50%)
+        scale(0);
+
+    border-radius: 50%;
+
+    background: #FFFFFF;
+
+    box-shadow:
+        0 0 18px rgba(255,78,107,0.9),
+        0 0 42px rgba(255,4,54,0.65);
+
+    opacity: 0;
+
+    animation:
+        completionCore
+        0.65s
+        cubic-bezier(.2,1.2,.3,1)
+        forwards;
+}
+
+.completion-flash {
+    position: absolute;
+
+    left: 50%;
+    top: 50%;
+
+    width: 50px;
+    height: 50px;
+
+    transform:
+        translate(-50%, -50%)
+        scale(0);
+
+    border-radius: 50%;
+
+    background:
+        radial-gradient(
+            circle,
+            rgba(255,78,107,0.58) 0%,
+            rgba(255,4,54,0.30) 35%,
+            rgba(255,4,54,0.07) 62%,
+            transparent 75%
+        );
+
+    opacity: 0;
+
+    animation:
+        completionFlash
+        1.05s
+        cubic-bezier(.16,.75,.2,1)
+        forwards;
+}
+
+.completion-wave {
+    position: absolute;
+
+    left: 50%;
+    top: 50%;
+
+    width: 28px;
+    height: 28px;
+
+    transform:
+        translate(-50%, -50%)
+        scale(0);
+
+    border-radius: 50%;
+
+    border:
+        2px solid
+        rgba(255,78,107,0.75);
+
+    background:
+        radial-gradient(
+            circle at center,
+            rgba(255,78,107,0.25) 0%,
+            rgba(255,4,54,0.14) 25%,
+            rgba(255,4,54,0.045) 48%,
+            transparent 70%
+        );
+
+    opacity: 0;
+}
+
+.completion-wave.wave-1 {
+    animation:
+        completionWave
+        1.15s
+        cubic-bezier(.15,.65,.2,1)
+        forwards;
+}
+
+.completion-wave.wave-2 {
+    animation:
+        completionWave
+        1.25s
+        cubic-bezier(.15,.65,.2,1)
+        0.10s
+        forwards;
+}
+
+.completion-wave.wave-3 {
+    animation:
+        completionWave
+        1.35s
+        cubic-bezier(.15,.65,.2,1)
+        0.20s
+        forwards;
+}
+
+.completion-wave.wave-4 {
+    animation:
+        completionWave
+        1.45s
+        cubic-bezier(.15,.65,.2,1)
+        0.30s
+        forwards;
+}
+
+@keyframes completionCore {
+    0% {
+        transform:
+            translate(-50%, -50%)
+            scale(0);
+
+        opacity: 0;
+    }
+
+    30% {
+        transform:
+            translate(-50%, -50%)
+            scale(1.8);
+
+        opacity: 1;
+    }
+
+    100% {
+        transform:
+            translate(-50%, -50%)
+            scale(0.8);
+
+        opacity: 0;
+    }
+}
+
+@keyframes completionFlash {
+    0% {
+        transform:
+            translate(-50%, -50%)
+            scale(0);
+
+        opacity: 0;
+    }
+
+    18% {
+        transform:
+            translate(-50%, -50%)
+            scale(1.4);
+
+        opacity: 0.85;
+    }
+
+    55% {
+        transform:
+            translate(-50%, -50%)
+            scale(7);
+
+        opacity: 0.18;
+    }
+
+    100% {
+        transform:
+            translate(-50%, -50%)
+            scale(15);
+
+        opacity: 0;
+    }
+}
+
+@keyframes completionWave {
+    0% {
+        transform:
+            translate(-50%, -50%)
+            scale(0.05);
+
+        opacity: 0;
+    }
+
+    8% {
+        opacity: 0.72;
+    }
+
+    45% {
+        opacity: 0.30;
+    }
+
+    100% {
+        transform:
+            translate(-50%, -50%)
+            scale(32);
+
+        opacity: 0;
+    }
+}
+
+.result-icon.celebration-icon {
+    animation:
+        celebrationIcon
+        0.65s
+        cubic-bezier(.2,1.35,.4,1)
+        both;
+}
+
+@keyframes celebrationIcon {
+    0% {
+        transform: scale(0.65);
+        opacity: 0;
+    }
+
+    65% {
+        transform: scale(1.08);
+        opacity: 1;
+    }
+
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+
+/* =========================================================
+   HEADER
+   ========================================================= */
+
+.header {
+    padding: 28px 30px 22px;
+
+    border-bottom:
+        1px solid
+        rgba(255,255,255,0.065);
+
+    background:
+        rgba(255,255,255,0.025);
+
+    backdrop-filter: blur(28px);
+    -webkit-backdrop-filter: blur(28px);
+}
+
+.header-top {
+    display: flex;
+
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 20px;
+}
+
+.brand {
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 5px;
+}
+
+.brand-title {
+    font-size: 12px;
+
+    font-weight: 700;
+
+    letter-spacing: 0.15em;
+
+    color: var(--white-muted);
+}
+
+.brand-subtitle {
+    font-size: 23px;
+
+    font-weight: 700;
+
+    color: var(--white);
+}
+
+.score-pill {
+    min-width: 72px;
+    height: 40px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    padding: 0 16px;
+
+    border-radius: var(--radius-pill);
+
+    background:
+        rgba(255,255,255,0.065);
+
+    border:
+        1px solid
+        rgba(255,255,255,0.11);
+
+    color: var(--pink);
+
+    font-size: 14px;
+
+    font-weight: 700;
+}
+
+
+/* =========================================================
+   GLOBAL PROGRESS
+   ========================================================= */
+
+.progress-area {
+    padding: 18px 30px 20px;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 14px;
+}
+
+.progress-track {
+    height: 5px;
+
+    flex: 1;
+
+    overflow: hidden;
+
+    background:
+        rgba(255,255,255,0.08);
+
+    border-radius: 999px;
+}
+
+.progress-fill {
+    height: 100%;
+
+    width: 0%;
+
+    border-radius: inherit;
+
+    background: var(--pink);
+
+    transition:
+        width .45s
+        cubic-bezier(.2,.8,.2,1);
+}
+
+.progress-text {
+    min-width: 48px;
+
+    text-align: right;
+
+    font-size: 12px;
+
+    font-weight: 700;
+
+    color: var(--white-muted);
+}
+
+
+/* =========================================================
+   SCREEN
+   ========================================================= */
+
+.screen {
+    display: none;
+
+    padding: 30px;
+
+    animation:
+        screenIn
+        .35s
+        cubic-bezier(.2,.8,.2,1);
+}
+
+.screen.active {
+    display: block;
+}
+
+@keyframes screenIn {
+    from {
+        opacity: 0;
+        transform: translateY(6px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+
+/* =========================================================
+   SECTION HEADING
+   ========================================================= */
+
+.section-heading {
+    margin-bottom: 24px;
+}
+
+.step-label {
+    display: inline-flex;
+
+    align-items: center;
+
+    height: 30px;
+
+    padding: 0 12px;
+
+    border-radius: var(--radius-pill);
+
+    background:
+        rgba(255,78,107,0.09);
+
+    border:
+        1px solid
+        rgba(255,78,107,0.17);
+
+    color: var(--pink);
+
+    font-size: 11px;
+
+    font-weight: 700;
+
+    letter-spacing: .03em;
+}
+
+.section-title {
+    margin: 14px 0 6px;
+
+    font-size:
+        clamp(27px,5vw,36px);
+
+    line-height: 1.1;
+
+    font-weight: 750;
+
+    letter-spacing: -.045em;
+}
+
+.section-description {
+    margin: 0;
+
+    color: var(--white-muted);
+
+    font-size: 14px;
+
+    line-height: 1.65;
+}
+
+
+/* =========================================================
+   PART PROGRESS PANEL
+   ========================================================= */
+
+.part-progress {
+    display: grid;
+
+    grid-template-columns:
+        1fr auto;
+
+    align-items: center;
+
+    gap: 16px;
+
+    margin-bottom: 20px;
+
+    padding: 15px 17px;
+
+    border-radius: var(--radius-md);
+
+    background:
+        rgba(255,255,255,0.045);
+
+    border:
+        1px solid
+        rgba(255,255,255,0.075);
+}
+
+.part-progress-main {
+    min-width: 0;
+}
+
+.part-progress-label {
+    color: var(--white-muted);
+
+    font-size: 11px;
+
+    font-weight: 700;
+
+    letter-spacing: .04em;
+}
+
+.part-progress-count {
+    margin-top: 4px;
+
+    font-size: 18px;
+
+    font-weight: 750;
+
+    letter-spacing: -.025em;
+}
+
+.part-progress-count strong {
+    color: var(--pink);
+}
+
+.part-progress-bar {
+    height: 4px;
+
+    margin-top: 9px;
+
+    overflow: hidden;
+
+    border-radius: 999px;
+
+    background:
+        rgba(255,255,255,0.075);
+}
+
+.part-progress-fill {
+    width: 0%;
+
+    height: 100%;
+
+    border-radius: inherit;
+
+    background: var(--pink);
+
+    transition:
+        width .35s
+        cubic-bezier(.2,.8,.2,1);
+}
+
+.remaining-box {
+    min-width: 90px;
+
+    padding: 10px 12px;
+
+    border-radius: 15px;
+
+    text-align: center;
+
+    background:
+        rgba(255,4,54,0.07);
+
+    border:
+        1px solid
+        rgba(255,4,54,0.14);
+}
+
+.remaining-label {
+    display: block;
+
+    color: var(--white-muted);
+
+    font-size: 10px;
+
+    font-weight: 650;
+}
+
+.remaining-number {
+    display: block;
+
+    margin-top: 2px;
+
+    color: var(--red);
+
+    font-size: 20px;
+
+    line-height: 1;
+
+    font-weight: 800;
+}
+
+
+/* =========================================================
+   EXPRESSION GRID
+   ========================================================= */
+
+.expression-grid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(2,minmax(0,1fr));
+
+    gap: 14px;
+}
+
+.expression-card {
+    position: relative;
+
+    padding: 21px;
+
+    min-height: 170px;
+
+    border-radius: var(--radius-lg);
+
+    background:
+        rgba(255,255,255,0.055);
+
+    border:
+        1px solid
+        var(--glass-border);
+
+    box-shadow:
+        inset 0 1px 0
+        rgba(255,255,255,0.055),
+        var(--shadow-card);
+
+    overflow: hidden;
+
+    transition:
+        transform .2s ease,
+        background .2s ease,
+        border-color .2s ease;
+}
+
+.expression-card:hover {
+    transform: translateY(-2px);
+
+    background:
+        rgba(255,255,255,0.075);
+
+    border-color:
+        rgba(255,255,255,0.15);
+}
+
+.expression-number {
+    display: inline-flex;
+
+    align-items: center;
+    justify-content: center;
+
+    width: 26px;
+    height: 26px;
+
+    border-radius: 50%;
+
+    background:
+        rgba(255,255,255,0.07);
+
+    color: var(--white-muted);
+
+    font-size: 11px;
+
+    font-weight: 700;
+
+    margin-bottom: 13px;
+}
+
+.expression {
+    font-size: 19px;
+
+    font-weight: 750;
+
+    color: var(--white);
+
+    letter-spacing: -.03em;
+}
+
+.meaning {
+    margin-top: 7px;
+
+    color: var(--pink);
+
+    font-size: 13px;
+
+    font-weight: 650;
+}
+
+.example {
+    margin-top: 17px;
+
+    padding-top: 14px;
+
+    border-top:
+        1px solid
+        rgba(255,255,255,0.07);
+
+    color: var(--white-muted);
+
+    font-size: 12px;
+
+    line-height: 1.6;
+}
+
+
+/* =========================================================
+   QUESTION
+   ========================================================= */
+
+.question-wrap {
+    max-width: 720px;
+
+    margin: 0 auto;
+}
+
+.question-count {
+    margin-bottom: 13px;
+
+    color: var(--pink);
+
+    font-size: 12px;
+
+    font-weight: 700;
+
+    letter-spacing: .03em;
+}
+
+.question-card {
+    padding: 27px;
+
+    border-radius: var(--radius-xl);
+
+    background:
+        rgba(255,255,255,0.055);
+
+    border:
+        1px solid
+        var(--glass-border);
+
+    box-shadow:
+        inset 0 1px 0
+        rgba(255,255,255,0.055),
+        var(--shadow-card);
+
+    margin-bottom: 16px;
+}
+
+.question-text {
+    font-size:
+        clamp(19px,3vw,24px);
+
+    line-height: 1.5;
+
+    font-weight: 650;
+
+    letter-spacing: -.025em;
+}
+
+
+/* =========================================================
+   INTERACTIVE
+   ========================================================= */
+
+.interactive {
+    --mx: 50%;
+    --my: 50%;
+
+    position: relative;
+
+    overflow: hidden;
+
+    isolation: isolate;
+
+    transform-origin: center;
+
+    transition:
+        transform .18s
+        cubic-bezier(.2,.8,.2,1),
+        background .18s ease,
+        border-color .18s ease;
+}
+
+.interactive::before {
+    content: "";
+
+    position: absolute;
+
+    inset: 0;
+
+    pointer-events: none;
+
+    z-index: -1;
+
+    background:
+        radial-gradient(
+            circle 95px at var(--mx) var(--my),
+            rgba(255,255,255,.115),
+            rgba(255,255,255,.045) 35%,
+            transparent 72%
+        );
+
+    opacity: 0;
+
+    transition:
+        opacity .18s ease;
+}
+
+.interactive:hover {
+    transform: scale(1.015);
+}
+
+.interactive:hover::before {
+    opacity: 1;
+}
+
+.interactive:active {
+    transform: scale(.975);
+}
+
+
+/* =========================================================
+   OPTIONS
+   ========================================================= */
+
+.options {
+    display: grid;
+
+    gap: 11px;
+}
+
+.option-button {
+    width: 100%;
+
+    min-height: 56px;
+
+    padding: 14px 17px;
+
+    border-radius: var(--radius-md);
+
+    border:
+        1px solid
+        rgba(255,255,255,.095);
+
+    background:
+        rgba(255,255,255,.045);
+
+    color: var(--white);
+
+    font-family: inherit;
+
+    font-size: 15px;
+
+    font-weight: 600;
+
+    text-align: left;
+
+    cursor: pointer;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: flex-start;
+
+    transition:
+        transform .18s
+        cubic-bezier(.2,.8,.2,1),
+        background .18s ease,
+        border-color .18s ease;
+}
+
+.option-button:hover {
+    transform: scale(1.012);
+
+    background:
+        rgba(255,255,255,.065);
+
+    border-color:
+        rgba(255,255,255,.16);
+}
+
+.option-button:active {
+    transform: scale(.985);
+}
+
+.option-button.correct {
+    background:
+        rgba(255,78,107,.12);
+
+    border-color:
+        rgba(255,78,107,.40);
+
+    color: var(--pink);
+}
+
+.option-button.wrong {
+    background:
+        rgba(255,4,54,.10);
+
+    border-color:
+        rgba(255,4,54,.35);
+
+    color: #FF8293;
+}
+
+.option-button:disabled {
+    cursor: default;
+}
+
+
+/* =========================================================
+   FEEDBACK
+   ========================================================= */
+
+.feedback {
+    margin-top: 16px;
+
+    padding: 16px 17px;
+
+    border-radius: var(--radius-md);
+
+    display: none;
+
+    font-size: 13px;
+
+    line-height: 1.65;
+}
+
+.feedback.show {
+    display: block;
+}
+
+.feedback.correct {
+    background:
+        rgba(255,78,107,.08);
+
+    border:
+        1px solid
+        rgba(255,78,107,.20);
+
+    color: #FF9AA9;
+}
+
+.feedback.wrong {
+    background:
+        rgba(255,4,54,.08);
+
+    border:
+        1px solid
+        rgba(255,4,54,.20);
+
+    color: #FF899A;
+}
+
+
+/* =========================================================
+   BUTTON
+   ========================================================= */
+
+.btn {
+    min-height: 50px;
+
+    padding: 0 21px;
+
+    border: 0;
+
+    border-radius: var(--radius-md);
+
+    font-family: inherit;
+
+    font-size: 14px;
+
+    font-weight: 700;
+
+    cursor: pointer;
+
+    display: inline-flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    text-align: center;
+
+    white-space: nowrap;
+
+    gap: 5px;
+
+    transition:
+        transform .18s
+        cubic-bezier(.2,.8,.2,1),
+        background .18s ease,
+        border-color .18s ease;
+}
+
+.btn::before {
+    background:
+        radial-gradient(
+            circle 90px at var(--mx) var(--my),
+            rgba(255,255,255,.20),
+            rgba(255,255,255,.06) 35%,
+            transparent 72%
+        );
+}
+
+.btn-primary {
+    color: #fff;
+
+    background: var(--red);
+
+    border:
+        1px solid
+        rgba(255,255,255,.12);
+}
+
+.btn-primary:hover {
+    background: #F00435;
+
+    transform: scale(1.018);
+}
+
+.btn-primary:active {
+    transform: scale(.975);
+}
+
+.btn-secondary {
+    color: var(--white);
+
+    background:
+        rgba(255,255,255,.06);
+
+    border:
+        1px solid
+        rgba(255,255,255,.10);
+}
+
+.btn-secondary:hover {
+    background:
+        rgba(255,255,255,.09);
+
+    border-color:
+        rgba(255,255,255,.15);
+
+    transform: scale(1.015);
+}
+
+.btn-secondary:active {
+    transform: scale(.975);
+}
+
+.bottom-actions {
+    display: flex;
+
+    justify-content: flex-end;
+
+    align-items: center;
+
+    margin-top: 18px;
+
+    gap: 10px;
+}
+
+
+/* =========================================================
+   SENTENCE
+   ========================================================= */
+
+.sentence-card {
+    padding: 26px;
+
+    border-radius: var(--radius-xl);
+
+    background:
+        rgba(255,255,255,.055);
+
+    border:
+        1px solid
+        var(--glass-border);
+
+    box-shadow:
+        inset 0 1px 0
+        rgba(255,255,255,.055),
+        var(--shadow-card);
+}
+
+.sentence {
+    font-size:
+        clamp(19px,3vw,25px);
+
+    line-height: 1.65;
+
+    font-weight: 650;
+}
+
+.blank {
+    display: inline-flex;
+
+    min-width: 135px;
+    min-height: 37px;
+
+    padding: 3px 12px;
+
+    margin: 0 3px;
+
+    vertical-align: middle;
+
+    align-items: center;
+
+    justify-content: center;
+
+    border-radius: 12px;
+
+    background:
+        rgba(255,78,107,.07);
+
+    border:
+        1px dashed
+        rgba(255,78,107,.38);
+
+    color: var(--pink);
+
+    transition:
+        all .2s ease;
+}
+
+.blank.filled {
+    border-style: solid;
+
+    background:
+        rgba(255,78,107,.11);
+}
+
+.word-bank {
+    display: grid;
+
+    grid-template-columns:
+        repeat(2,minmax(0,1fr));
+
+    gap: 10px;
+
+    margin-top: 20px;
+}
+
+.word-chip {
+    min-height: 52px;
+
+    padding: 10px 13px;
+
+    border-radius: var(--radius-md);
+
+    background:
+        rgba(255,255,255,.05);
+
+    border:
+        1px solid
+        rgba(255,255,255,.09);
+
+    color: var(--white);
+
+    font-family: inherit;
+
+    font-size: 13px;
+
+    font-weight: 650;
+
+    cursor: pointer;
+
+    position: relative;
+
+    overflow: hidden;
+
+    isolation: isolate;
+
+    transition:
+        transform .18s
+        cubic-bezier(.2,.8,.2,1),
+        background .18s ease,
+        border-color .18s ease;
+}
+
+.word-chip::before {
+    content: "";
+
+    position: absolute;
+
+    inset: 0;
+
+    pointer-events: none;
+
+    z-index: -1;
+
+    background:
+        radial-gradient(
+            circle 80px at var(--mx,50%) var(--my,50%),
+            rgba(255,255,255,.12),
+            rgba(255,255,255,.04) 38%,
+            transparent 72%
+        );
+
+    opacity: 0;
+
+    transition:
+        opacity .18s ease;
+}
+
+.word-chip:hover {
+    transform: scale(1.012);
+
+    background:
+        rgba(255,255,255,.075);
+
+    border-color:
+        rgba(255,255,255,.15);
+}
+
+.word-chip:hover::before {
+    opacity: 1;
+}
+
+.word-chip:active {
+    transform: scale(.985);
+}
+
+.word-chip.selected {
+    background:
+        rgba(255,78,107,.11);
+
+    border-color:
+        rgba(255,78,107,.34);
+
+    color: var(--pink);
+}
+
+.word-chip:disabled {
+    cursor: default;
+}
+
+
+/* =========================================================
+   RESULT
+   ========================================================= */
+
+.result-wrap {
+    max-width: 680px;
+
+    margin: 0 auto;
+
+    text-align: center;
+}
+
+.result-icon {
+    width: 82px;
+    height: 82px;
+
+    margin: 0 auto 20px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    border-radius: 27px;
+
+    background:
+        rgba(255,78,107,.10);
+
+    border:
+        1px solid
+        rgba(255,78,107,.22);
+
+    color: var(--pink);
+
+    font-size: 30px;
+}
+
+.result-title {
+    margin: 0;
+
+    font-size: 30px;
+
+    letter-spacing: -.045em;
+}
+
+.result-score {
+    margin: 15px 0 7px;
+
+    font-size:
+        clamp(55px,12vw,84px);
+
+    line-height: 1;
+
+    font-weight: 800;
+
+    letter-spacing: -.06em;
+
+    color: var(--pink);
+}
+
+.result-message {
+    color: var(--white-muted);
+
+    font-size: 14px;
+
+    line-height: 1.6;
+}
+
+.review-grid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(2,minmax(0,1fr));
+
+    gap: 10px;
+
+    margin-top: 27px;
+
+    text-align: left;
+}
+
+.review-card {
+    padding: 15px 16px;
+
+    border-radius: var(--radius-md);
+
+    background:
+        rgba(255,255,255,.045);
+
+    border:
+        1px solid
+        rgba(255,255,255,.075);
+}
+
+.review-expression {
+    color: var(--pink);
+
+    font-size: 14px;
+
+    font-weight: 700;
+}
+
+.review-meaning {
+    margin-top: 5px;
+
+    color: var(--white-muted);
+
+    font-size: 12px;
+}
+
+
+/* =========================================================
+   FOOTER
+   ========================================================= */
+
+.footer {
+    padding: 0 30px 28px;
+
+    text-align: center;
+
+    color: var(--white-faint);
+
+    font-size: 11px;
+}
+
+button:focus-visible {
+    outline:
+        2px solid
+        var(--pink);
+
+    outline-offset: 3px;
+}
+
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media (max-width:680px) {
+
+    .app {
+        width: calc(100% - 16px);
+
+        margin: 8px auto;
+
+        min-height:
+            calc(100vh - 16px);
+
+        border-radius: 27px;
+    }
+
+    .header {
+        padding:
+            23px 20px 18px;
+    }
+
+    .progress-area {
+        padding:
+            15px 20px 17px;
+    }
+
+    .screen {
+        padding:
+            24px 20px;
+    }
+
+    .expression-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .expression-card {
+        min-height: auto;
+    }
+
+    .word-bank {
+        grid-template-columns: 1fr;
+    }
+
+    .question-card,
+    .sentence-card {
+        padding: 21px;
+    }
+
+    .review-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .part-progress {
+        grid-template-columns: 1fr;
+    }
+
+    .remaining-box {
+        width: 100%;
+    }
+
+    .bottom-actions {
+        justify-content: stretch;
+    }
+
+    .bottom-actions .btn {
+        flex: 1;
+    }
+}
+
+
+/* =========================================================
+   REDUCED MOTION
+   ========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+
+    *,
+    *::before,
+    *::after {
+        animation-duration: .01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: .01ms !important;
+    }
+
+    .completion-wave,
+    .completion-flash,
+    .completion-core {
+        display: none;
+    }
+}
+
+
+/* =========================================================
+   TOUCH
+   ========================================================= */
+
+@media (hover:none) {
+
+    .interactive:hover,
+    .option-button:hover,
+    .word-chip:hover,
+    .btn-primary:hover,
+    .btn-secondary:hover {
+        transform: none;
+    }
+
+    .interactive::before,
+    .word-chip::before {
+        display: none;
+    }
+}
+</style>
+</head>
+
+
+<body>
+
+<div class="app">
+
+    <!-- 완료 팡파레 -->
+    <div
+        class="completion-effect"
+        id="completionEffect"
+        aria-hidden="true">
+
+        <div class="completion-flash"></div>
+
+        <div class="completion-wave wave-1"></div>
+        <div class="completion-wave wave-2"></div>
+        <div class="completion-wave wave-3"></div>
+        <div class="completion-wave wave-4"></div>
+
+        <div class="completion-core"></div>
+
+    </div>
+
+
+    <div class="app-content">
+
+        <!-- =================================================
+             HEADER
+             ================================================= -->
+
+        <header class="header">
+
+            <div class="header-top">
+
+                <div class="brand">
+
+                    <div class="brand-title">
+                        ENGLISH EXPRESSIONS
+                    </div>
+
+                    <div class="brand-subtitle">
+                        영어 표현 테스트
+                    </div>
+
+                </div>
+
+                <div
+                    class="score-pill"
+                    id="scorePill">
+
+                    0점
+
+                </div>
+
+            </div>
+
+        </header>
+
+
+        <!-- =================================================
+             GLOBAL PROGRESS
+             ================================================= -->
+
+        <div class="progress-area">
+
+            <div class="progress-track">
+
+                <div
+                    class="progress-fill"
+                    id="progressFill">
+                </div>
+
+            </div>
+
+            <div
+                class="progress-text"
+                id="progressText">
+
+                0 / 12
+
+            </div>
+
+        </div>
+
+
+        <!-- =================================================
+             SCREEN 1
+             ================================================= -->
+
+        <section
+            class="screen active"
+            id="screen1">
+
+            <div class="section-heading">
+
+                <div class="step-label">
+                    1단계 · 표현 학습
+                </div>
+
+                <h1 class="section-title">
+                    먼저 표현을 익혀보세요
+                </h1>
+
+                <p class="section-description">
+                    여섯 개의 표현을 확인한 뒤 문맥 문제를 풀어보세요.
+                </p>
+
+            </div>
+
+
+            <div
+                class="expression-grid"
+                id="expressionGrid">
+            </div>
+
+
+            <div class="bottom-actions">
+
+                <button
+                    class="btn btn-primary interactive"
+                    onclick="startQuiz()">
+
+                    문제 풀기 <span>→</span>
+
+                </button>
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================================
+             SCREEN 2
+             ================================================= -->
+
+        <section
+            class="screen"
+            id="screen2">
+
+            <div class="question-wrap">
+
+                <div class="section-heading">
+
+                    <div class="step-label">
+                        2단계 · 문맥 문제
+                    </div>
+
+                    <h1 class="section-title">
+                        알맞은 표현을 고르세요
+                    </h1>
+
+                    <p class="section-description">
+                        문장의 의미에 가장 적절한 표현을 선택하세요.
+                    </p>
+
+                </div>
+
+
+                <!-- 파트별 진행 상황 -->
+
+                <div class="part-progress">
+
+                    <div class="part-progress-main">
+
+                        <div class="part-progress-label">
+                            문맥 문제 진행 상황
+                        </div>
+
+                        <div
+                            class="part-progress-count"
+                            id="quizProgressCount">
+
+                            <strong>0</strong> / 6 문제
+
+                        </div>
+
+                        <div class="part-progress-bar">
+
+                            <div
+                                class="part-progress-fill"
+                                id="quizProgressFill">
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="remaining-box">
+
+                        <span class="remaining-label">
+                            남은 문제
+                        </span>
+
+                        <span
+                            class="remaining-number"
+                            id="quizRemaining">
+
+                            6
+
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <div
+                    class="question-count"
+                    id="quizCount">
+
+                    QUESTION 01
+
+                </div>
+
+
+                <div class="question-card">
+
+                    <div
+                        class="question-text"
+                        id="quizQuestion">
+                    </div>
+
+                </div>
+
+
+                <div
+                    class="options"
+                    id="quizOptions">
+                </div>
+
+
+                <div
+                    class="feedback"
+                    id="quizFeedback">
+                </div>
+
+
+                <div class="bottom-actions">
+
+                    <button
+                        class="btn btn-primary interactive"
+                        id="quizNextButton"
+                        style="display:none;"
+                        onclick="nextQuestion()">
+
+                        다음 문제 <span>→</span>
+
+                    </button>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================================
+             SCREEN 3
+             ================================================= -->
+
+        <section
+            class="screen"
+            id="screen3">
+
+            <div class="question-wrap">
+
+                <div class="section-heading">
+
+                    <div class="step-label">
+                        3단계 · 문장 완성
+                    </div>
+
+                    <h1 class="section-title">
+                        문장을 완성하세요
+                    </h1>
+
+                    <p class="section-description">
+                        아래 표현 중 알맞은 것을 선택하세요.
+                    </p>
+
+                </div>
+
+
+                <!-- 파트별 진행 상황 -->
+
+                <div class="part-progress">
+
+                    <div class="part-progress-main">
+
+                        <div class="part-progress-label">
+                            문장 완성 진행 상황
+                        </div>
+
+                        <div
+                            class="part-progress-count"
+                            id="sentenceProgressCount">
+
+                            <strong>0</strong> / 6 문제
+
+                        </div>
+
+                        <div class="part-progress-bar">
+
+                            <div
+                                class="part-progress-fill"
+                                id="sentenceProgressFill">
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="remaining-box">
+
+                        <span class="remaining-label">
+                            남은 문제
+                        </span>
+
+                        <span
+                            class="remaining-number"
+                            id="sentenceRemaining">
+
+                            6
+
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <div
+                    class="question-count"
+                    id="sentenceCount">
+
+                    QUESTION 01
+
+                </div>
+
+
+                <div class="sentence-card">
+
+                    <div
+                        class="sentence"
+                        id="sentenceText">
+                    </div>
+
+
+                    <div
+                        class="word-bank"
+                        id="wordBank">
+                    </div>
+
+                </div>
+
+
+                <div
+                    class="feedback"
+                    id="sentenceFeedback">
+                </div>
+
+
+                <div class="bottom-actions">
+
+                    <button
+                        class="btn btn-secondary interactive"
+                        id="sentenceResetButton"
+                        onclick="resetSentence()">
+
+                        다시 선택
+
+                    </button>
+
+
+                    <button
+                        class="btn btn-primary interactive"
+                        id="sentenceNextButton"
+                        style="display:none;"
+                        onclick="nextSentence()">
+
+                        다음 문제 <span>→</span>
+
+                    </button>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================================
+             SCREEN 4
+             ================================================= -->
+
+        <section
+            class="screen"
+            id="screen4">
+
+            <div class="result-wrap">
+
+                <div
+                    class="result-icon"
+                    id="resultIcon">
+
+                    ✓
+
+                </div>
+
+
+                <h1 class="result-title">
+                    학습 완료
+                </h1>
+
+
+                <div
+                    class="result-score"
+                    id="finalScore">
+
+                    0 / 12
+
+                </div>
+
+
+                <p
+                    class="result-message"
+                    id="resultMessage">
+                </p>
+
+
+                <div
+                    class="review-grid"
+                    id="reviewGrid">
+                </div>
+
+
+                <div class="bottom-actions">
+
+                    <button
+                        class="btn btn-primary interactive"
+                        onclick="restartAll()">
+
+                        다시 풀기
+
+                    </button>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <footer class="footer">
+            English Expressions Practice
+        </footer>
+
+    </div>
+
+</div>
+
+
+<script>
+
+/* =========================================================
+   DATA
+   ========================================================= */
+
+const expressions = [
+
+    {
+        expression: "find out",
+        meaning: "알아내다",
+        example:
+            "I want to find out what happened."
+    },
+
+    {
+        expression: "set up",
+        meaning: "설치하다 · 마련하다",
+        example:
+            "They decided to set up a new club."
+    },
+
+    {
+        expression: "sort out",
+        meaning: "정리하다 · 분류하다",
+        example:
+            "Please sort out these books."
+    },
+
+    {
+        expression: "pay attention to",
+        meaning: "주의를 기울이다",
+        example:
+            "Please pay attention to the teacher."
+    },
+
+    {
+        expression: "come up with",
+        meaning: "생각해 내다",
+        example:
+            "She came up with a great idea."
+    },
+
+    {
+        expression: "carry out",
+        meaning: "실행하다",
+        example:
+            "They carried out the plan."
+    }
+
+];
+
+
+const quizQuestions = [
+
+    {
+        question:
+            "I want to ______ what happened yesterday.",
+
+        options: [
+            "find out",
+            "set up",
+            "sort out",
+            "carry out"
+        ],
+
+        answer:
+            "find out",
+
+        feedbackCorrect:
+            "정답입니다! 'find out'은 어떤 사실을 알아내거나 확인한다는 뜻입니다.",
+
+        feedbackWrong:
+            "아쉬워요. 여기서는 어떤 일이 있었는지 '알아내다'라는 의미가 필요합니다."
+    },
+
+
+    {
+        question:
+            "The students decided to ______ a new club at school.",
+
+        options: [
+            "set up",
+            "find out",
+            "pay attention to",
+            "sort out"
+        ],
+
+        answer:
+            "set up",
+
+        feedbackCorrect:
+            "정답입니다! 'set up'은 무언가를 설치하거나 마련한다는 뜻입니다.",
+
+        feedbackWrong:
+            "아쉬워요. 학교에 새로운 동아리를 '마련하다'라는 의미가 필요합니다."
+    },
+
+
+    {
+        question:
+            "Please ______ these books by subject.",
+
+        options: [
+            "sort out",
+            "carry out",
+            "find out",
+            "come up with"
+        ],
+
+        answer:
+            "sort out",
+
+        feedbackCorrect:
+            "정답입니다! 'sort out'은 여러 대상을 정리하거나 분류한다는 뜻입니다.",
+
+        feedbackWrong:
+            "아쉬워요. 책을 주제별로 '정리하다'라는 의미가 필요합니다."
+    },
+
+
+    {
+        question:
+            "You should ______ what the teacher is saying.",
+
+        options: [
+            "pay attention to",
+            "set up",
+            "carry out",
+            "find out"
+        ],
+
+        answer:
+            "pay attention to",
+
+        feedbackCorrect:
+            "정답입니다! 'pay attention to'는 ~에 주의를 기울인다는 뜻입니다.",
+
+        feedbackWrong:
+            "아쉬워요. 선생님이 말하는 내용에 '주의를 기울이다'라는 의미가 필요합니다."
+    },
+
+
+    {
+        question:
+            "She ______ a great idea for the school festival.",
+
+        options: [
+            "came up with",
+            "sorted out",
+            "set up",
+            "paid attention to"
+        ],
+
+        answer:
+            "came up with",
+
+        feedbackCorrect:
+            "정답입니다! 'come up with'는 아이디어나 해결책을 생각해 낸다는 뜻입니다.",
+
+        feedbackWrong:
+            "아쉬워요. 좋은 아이디어를 '생각해 냈다'라는 의미가 필요합니다."
+    },
+
+
+    {
+        question:
+            "The students ______ the plan successfully.",
+
+        options: [
+            "carried out",
+            "found out",
+            "set up",
+            "sorted out"
+        ],
+
+        answer:
+            "carried out",
+
+        feedbackCorrect:
+            "정답입니다! 'carry out'은 계획이나 일을 실제로 실행한다는 뜻입니다.",
+
+        feedbackWrong:
+            "아쉬워요. 계획을 실제로 '실행했다'라는 의미가 필요합니다."
+    }
+
+];
+
+
+const sentenceQuestions = [
+
+    {
+        before: "I need to",
+        after: "the truth.",
+        answer: "find out",
+        displayAnswer: "find out"
+    },
+
+    {
+        before: "They decided to",
+        after: "a new computer system.",
+        answer: "set up",
+        displayAnswer: "set up"
+    },
+
+    {
+        before: "We need to",
+        after: "the information carefully.",
+        answer: "sort out",
+        displayAnswer: "sort out"
+    },
+
+    {
+        before: "Please",
+        after: "the instructions.",
+        answer: "pay attention to",
+        displayAnswer: "pay attention to"
+    },
+
+    {
+        before: "He",
+        after: "a solution to the problem.",
+        answer: "come up with",
+        displayAnswer: "came up with"
+    },
+
+    {
+        before: "The company",
+        after: "the new plan last week.",
+        answer: "carry out",
+        displayAnswer: "carried out"
+    }
+
+];
+
+
+/* =========================================================
+   STATE
+   ========================================================= */
+
+let currentScreen = 1;
+
+let score = 0;
+
+let quizIndex = 0;
+
+let sentenceIndex = 0;
+
+let sentenceAnswered = false;
+
+
+/* =========================================================
+   DOM
+   ========================================================= */
+
+const expressionGrid =
+    document.getElementById("expressionGrid");
+
+const progressFill =
+    document.getElementById("progressFill");
+
+const progressText =
+    document.getElementById("progressText");
+
+const scorePill =
+    document.getElementById("scorePill");
+
+const completionEffect =
+    document.getElementById("completionEffect");
+
+
+/* =========================================================
+   RENDER EXPRESSIONS
+   ========================================================= */
+
+function renderExpressions() {
+
+    expressionGrid.innerHTML = "";
+
+    expressions.forEach((item,index) => {
+
+        const card =
+            document.createElement("div");
+
+        card.className =
+            "expression-card";
+
+        card.innerHTML = `
+
+            <div class="expression-number">
+                ${String(index + 1).padStart(2,"0")}
+            </div>
+
+            <div class="expression">
+                ${item.expression}
+            </div>
+
+            <div class="meaning">
+                ${item.meaning}
+            </div>
+
+            <div class="example">
+                ${item.example}
+            </div>
+
+        `;
+
+        expressionGrid.appendChild(card);
+
+    });
+
+}
+
+
+/* =========================================================
+   MOUSE FOLLOW
+   ========================================================= */
+
+function updateMousePosition(
+    element,
+    event
+) {
+
+    const rect =
+        element.getBoundingClientRect();
+
+    const x =
+        ((event.clientX - rect.left) /
+        rect.width) * 100;
+
+    const y =
+        ((event.clientY - rect.top) /
+        rect.height) * 100;
+
+    element.style.setProperty(
+        "--mx",
+        `${x}%`
+    );
+
+    element.style.setProperty(
+        "--my",
+        `${y}%`
+    );
+
+}
+
+
+document.addEventListener(
+    "mousemove",
+    event => {
+
+        const target =
+            event.target.closest(
+                ".btn, .option-button, .word-chip"
+            );
+
+        if (!target) return;
+
+        updateMousePosition(
+            target,
+            event
+        );
+
+    }
+);
+
+
+/* =========================================================
+   GLOBAL PROGRESS
+   ========================================================= */
+
+function updateGlobalProgress() {
+
+    const total =
+        quizQuestions.length +
+        sentenceQuestions.length;
+
+    let completed = 0;
+
+
+    /*
+     * 2단계에서 완료한 문제
+     */
+    if (currentScreen >= 3) {
+
+        completed +=
+            quizQuestions.length;
+
+    } else if (currentScreen === 2) {
+
+        completed += quizIndex;
+
+    }
+
+
+    /*
+     * 3단계에서 완료한 문제
+     */
+    if (currentScreen >= 4) {
+
+        completed +=
+            sentenceQuestions.length;
+
+    } else if (currentScreen === 3) {
+
+        completed += sentenceIndex;
+
+    }
+
+
+    const percentage =
+        (completed / total) * 100;
+
+
+    progressFill.style.width =
+        `${percentage}%`;
+
+
+    progressText.textContent =
+        `${completed} / ${total}`;
+
+}
+
+
+/* =========================================================
+   PART PROGRESS
+   ========================================================= */
+
+function updateQuizProgress(
+    completed
+) {
+
+    const total =
+        quizQuestions.length;
+
+    const remaining =
+        Math.max(total - completed, 0);
+
+    const percentage =
+        (completed / total) * 100;
+
+
+    document.getElementById(
+        "quizProgressCount"
+    ).innerHTML =
+        `<strong>${completed}</strong> / ${total} 문제`;
+
+
+    document.getElementById(
+        "quizRemaining"
+    ).textContent =
+        remaining;
+
+
+    document.getElementById(
+        "quizProgressFill"
+    ).style.width =
+        `${percentage}%`;
+
+}
+
+
+function updateSentenceProgress(
+    completed
+) {
+
+    const total =
+        sentenceQuestions.length;
+
+    const remaining =
+        Math.max(total - completed, 0);
+
+    const percentage =
+        (completed / total) * 100;
+
+
+    document.getElementById(
+        "sentenceProgressCount"
+    ).innerHTML =
+        `<strong>${completed}</strong> / ${total} 문제`;
+
+
+    document.getElementById(
+        "sentenceRemaining"
+    ).textContent =
+        remaining;
+
+
+    document.getElementById(
+        "sentenceProgressFill"
+    ).style.width =
+        `${percentage}%`;
+
+}
+
+
+/* =========================================================
+   SCREEN
+   ========================================================= */
+
+function showScreen(screen) {
+
+    document
+        .querySelectorAll(".screen")
+        .forEach(element => {
+
+            element.classList.remove(
+                "active"
+            );
+
+        });
+
+
+    document
+        .getElementById(`screen${screen}`)
+        .classList.add("active");
+
+
+    currentScreen =
+        screen;
+
+
+    updateGlobalProgress();
+
+
+    window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+    });
+
+}
+
+
+/* =========================================================
+   SCORE
+   ========================================================= */
+
+function updateScore() {
+
+    scorePill.textContent =
+        `${score}점`;
+
+}
+
+
+/* =========================================================
+   START QUIZ
+   ========================================================= */
+
+function startQuiz() {
+
+    quizIndex = 0;
+
+    updateQuizProgress(0);
+
+    loadQuizQuestion();
+
+    showScreen(2);
+
+}
+
+
+/* =========================================================
+   LOAD QUIZ QUESTION
+   ========================================================= */
+
+function loadQuizQuestion() {
+
+    const question =
+        quizQuestions[quizIndex];
+
+
+    document.getElementById(
+        "quizCount"
+    ).textContent =
+        `QUESTION ${String(
+            quizIndex + 1
+        ).padStart(2,"0")} · ${quizIndex + 1} / ${quizQuestions.length}`;
+
+
+    document.getElementById(
+        "quizQuestion"
+    ).textContent =
+        question.question;
+
+
+    const options =
+        document.getElementById(
+            "quizOptions"
+        );
+
+    options.innerHTML = "";
+
+
+    const feedback =
+        document.getElementById(
+            "quizFeedback"
+        );
+
+    feedback.className =
+        "feedback";
+
+    feedback.textContent = "";
+
+
+    document.getElementById(
+        "quizNextButton"
+    ).style.display =
+        "none";
+
+
+    const shuffledOptions =
+        shuffle([
+            ...question.options
+        ]);
+
+
+    shuffledOptions.forEach(option => {
+
+        const button =
+            document.createElement("button");
+
+        button.className =
+            "option-button interactive";
+
+        button.textContent =
+            option;
+
+        button.onclick =
+            () =>
+                answerQuiz(
+                    option,
+                    button
+                );
+
+        options.appendChild(
+            button
+        );
+
+    });
+
+
+    /*
+     * 문제를 아직 풀기 전이므로
+     * 완료 수는 quizIndex
+     */
+    updateQuizProgress(
+        quizIndex
+    );
+
+    updateGlobalProgress();
+
+}
+
+
+/* =========================================================
+   ANSWER QUIZ
+   ========================================================= */
+
+function answerQuiz(
+    selected,
+    selectedButton
+) {
+
+    const question =
+        quizQuestions[quizIndex];
+
+
+    const buttons =
+        document.querySelectorAll(
+            "#quizOptions .option-button"
+        );
+
+
+    buttons.forEach(button => {
+
+        button.disabled = true;
+
+
+        if (
+            button.textContent ===
+            question.answer
+        ) {
+
+            button.classList.add(
+                "correct"
+            );
+
+        }
+
+    });
+
+
+    const feedback =
+        document.getElementById(
+            "quizFeedback"
+        );
+
+
+    if (
+        selected ===
+        question.answer
+    ) {
+
+        score++;
+
+        selectedButton.classList.add(
+            "correct"
+        );
+
+        feedback.className =
+            "feedback correct show";
+
+        feedback.textContent =
+            question.feedbackCorrect;
+
+    } else {
+
+        selectedButton.classList.add(
+            "wrong"
+        );
+
+        feedback.className =
+            "feedback wrong show";
+
+        feedback.textContent =
+            question.feedbackWrong +
+            ` 정답은 '${question.answer}'입니다.`;
+
+    }
+
+
+    updateScore();
+
+
+    /*
+     * 현재 문제까지 풀었으므로
+     * 완료 수는 index + 1
+     */
+    updateQuizProgress(
+        quizIndex + 1
+    );
+
+
+    updateGlobalProgress();
+
+
+    document.getElementById(
+        "quizNextButton"
+    ).style.display =
+        "inline-flex";
+
+}
+
+
+/* =========================================================
+   NEXT QUIZ
+   ========================================================= */
+
+function nextQuestion() {
+
+    quizIndex++;
+
+
+    if (
+        quizIndex >=
+        quizQuestions.length
+    ) {
+
+        sentenceIndex = 0;
+
+        updateSentenceProgress(0);
+
+        loadSentence();
+
+        showScreen(3);
+
+        return;
+
+    }
+
+
+    loadQuizQuestion();
+
+}
+
+
+/* =========================================================
+   LOAD SENTENCE
+   ========================================================= */
+
+function loadSentence() {
+
+    sentenceAnswered = false;
+
+
+    const question =
+        sentenceQuestions[
+            sentenceIndex
+        ];
+
+
+    document.getElementById(
+        "sentenceCount"
+    ).textContent =
+        `QUESTION ${String(
+            sentenceIndex + 1
+        ).padStart(2,"0")} · ${sentenceIndex + 1} / ${sentenceQuestions.length}`;
+
+
+    document.getElementById(
+        "sentenceText"
+    ).innerHTML = `
+
+        ${question.before}
+
+        <span
+            class="blank"
+            id="sentenceBlank">
+            ?
+        </span>
+
+        ${question.after}
+
+    `;
+
+
+    const wordBank =
+        document.getElementById(
+            "wordBank"
+        );
+
+    wordBank.innerHTML = "";
+
+
+    /*
+     * 반드시 expressions 전체에서 가져오므로
+     * 정답 표현이 선택지에서 빠지는 문제가 없음
+     */
+    const shuffledExpressions =
+        shuffle([
+            ...expressions
+        ]);
+
+
+    shuffledExpressions.forEach(item => {
+
+        const chip =
+            document.createElement("button");
+
+        chip.className =
+            "word-chip interactive";
+
+        chip.textContent =
+            item.expression;
+
+        chip.onclick =
+            () =>
+                selectSentenceAnswer(
+                    item.expression,
+                    chip
+                );
+
+        wordBank.appendChild(
+            chip
+        );
+
+    });
+
+
+    const feedback =
+        document.getElementById(
+            "sentenceFeedback"
+        );
+
+    feedback.className =
+        "feedback";
+
+    feedback.textContent = "";
+
+
+    document.getElementById(
+        "sentenceNextButton"
+    ).style.display =
+        "none";
+
+
+    document.getElementById(
+        "sentenceResetButton"
+    ).style.display =
+        "inline-flex";
+
+
+    updateSentenceProgress(
+        sentenceIndex
+    );
+
+    updateGlobalProgress();
+
+}
+
+
+/* =========================================================
+   SENTENCE ANSWER
+   ========================================================= */
+
+function selectSentenceAnswer(
+    selected,
+    selectedChip
+) {
+
+    if (sentenceAnswered)
+        return;
+
+
+    const question =
+        sentenceQuestions[
+            sentenceIndex
+        ];
+
+
+    const blank =
+        document.getElementById(
+            "sentenceBlank"
+        );
+
+
+    const feedback =
+        document.getElementById(
+            "sentenceFeedback"
+        );
+
+
+    if (
+        selected ===
+        question.answer
+    ) {
+
+        sentenceAnswered = true;
+
+        score++;
+
+        updateScore();
+
+
+        blank.textContent =
+            question.displayAnswer;
+
+        blank.classList.add(
+            "filled"
+        );
+
+
+        selectedChip.classList.add(
+            "selected"
+        );
+
+
+        document
+            .querySelectorAll(
+                ".word-chip"
+            )
+            .forEach(chip => {
+
+                chip.disabled = true;
+
+            });
+
+
+        feedback.className =
+            "feedback correct show";
+
+        feedback.textContent =
+            "정답입니다! 문장의 의미와 문법에 맞는 표현을 선택했습니다.";
+
+
+        /*
+         * 현재 문제까지 완료
+         */
+        updateSentenceProgress(
+            sentenceIndex + 1
+        );
+
+
+        updateGlobalProgress();
+
+
+        document.getElementById(
+            "sentenceNextButton"
+        ).style.display =
+            "inline-flex";
+
+
+    } else {
+
+        selectedChip.classList.add(
+            "selected"
+        );
+
+
+        feedback.className =
+            "feedback wrong show";
+
+        feedback.textContent =
+            "아직 정답이 아니에요. 문장의 의미를 다시 생각해 보세요.";
+
+
+        setTimeout(() => {
+
+            selectedChip.classList.remove(
+                "selected"
+            );
+
+        }, 550);
+
+    }
+
+}
+
+
+/* =========================================================
+   RESET SENTENCE
+   ========================================================= */
+
+function resetSentence() {
+
+    if (sentenceAnswered)
+        return;
+
+
+    document
+        .querySelectorAll(
+            ".word-chip"
+        )
+        .forEach(chip => {
+
+            chip.classList.remove(
+                "selected"
+            );
+
+        });
+
+
+    const feedback =
+        document.getElementById(
+            "sentenceFeedback"
+        );
+
+
+    feedback.className =
+        "feedback";
+
+    feedback.textContent = "";
+
+}
+
+
+/* =========================================================
+   NEXT SENTENCE
+   ========================================================= */
+
+function nextSentence() {
+
+    sentenceIndex++;
+
+
+    if (
+        sentenceIndex >=
+        sentenceQuestions.length
+    ) {
+
+        finishActivity();
+
+        return;
+
+    }
+
+
+    loadSentence();
+
+}
+
+
+/* =========================================================
+   FINISH
+   ========================================================= */
+
+function finishActivity() {
+
+    const total =
+        quizQuestions.length +
+        sentenceQuestions.length;
+
+
+    document.getElementById(
+        "finalScore"
+    ).textContent =
+        `${score} / ${total}`;
+
+
+    let message;
+
+
+    if (score === total) {
+
+        message =
+            "완벽합니다! 여섯 표현을 정확하게 이해하고 사용할 수 있어요.";
+
+    } else if (score >= 9) {
+
+        message =
+            "아주 잘했습니다! 대부분의 표현을 잘 이해하고 있어요.";
+
+    } else if (score >= 6) {
+
+        message =
+            "좋아요! 몇 가지 표현을 다시 확인하면 더 정확하게 사용할 수 있어요.";
+
+    } else {
+
+        message =
+            "표현을 한 번 더 복습한 뒤 다시 도전해 보세요.";
+
+    }
+
+
+    document.getElementById(
+        "resultMessage"
+    ).textContent =
+        message;
+
+
+    renderReview();
+
+
+    /*
+     * 전체 완료
+     */
+    currentScreen = 4;
+
+    showScreen(4);
+
+
+    /*
+     * 전체 진행률 100%
+     */
+    progressFill.style.width =
+        "100%";
+
+    progressText.textContent =
+        `${total} / ${total}`;
+
+
+    playCompletionEffect();
+
+}
+
+
+/* =========================================================
+   COMPLETION EFFECT
+   ========================================================= */
+
+function playCompletionEffect() {
+
+    /*
+     * 이전 애니메이션 초기화
+     */
+    completionEffect.classList.remove(
+        "playing"
+    );
+
+
+    void completionEffect.offsetWidth;
+
+
+    completionEffect.classList.add(
+        "playing"
+    );
+
+
+    const icon =
+        document.getElementById(
+            "resultIcon"
+        );
+
+
+    icon.classList.remove(
+        "celebration-icon"
+    );
+
+
+    void icon.offsetWidth;
+
+
+    icon.classList.add(
+        "celebration-icon"
+    );
+
+
+    setTimeout(() => {
+
+        completionEffect.classList.remove(
+            "playing"
+        );
+
+    }, 1900);
+
+}
+
+
+/* =========================================================
+   REVIEW
+   ========================================================= */
+
+function renderReview() {
+
+    const grid =
+        document.getElementById(
+            "reviewGrid"
+        );
+
+
+    grid.innerHTML = "";
+
+
+    expressions.forEach(item => {
+
+        const card =
+            document.createElement("div");
+
+
+        card.className =
+            "review-card";
+
+
+        card.innerHTML = `
+
+            <div class="review-expression">
+                ${item.expression}
+            </div>
+
+            <div class="review-meaning">
+                ${item.meaning}
+            </div>
+
+        `;
+
+
+        grid.appendChild(
+            card
+        );
+
+    });
+
+}
+
+
+/* =========================================================
+   RESTART
+   ========================================================= */
+
+function restartAll() {
+
+    score = 0;
+
+    quizIndex = 0;
+
+    sentenceIndex = 0;
+
+    sentenceAnswered = false;
+
+
+    updateScore();
+
+    updateQuizProgress(0);
+
+    updateSentenceProgress(0);
+
+
+    progressFill.style.width =
+        "0%";
+
+    progressText.textContent =
+        "0 / 12";
+
+
+    showScreen(1);
+
+}
+
+
+/* =========================================================
+   SHUFFLE
+   ========================================================= */
+
+function shuffle(array) {
+
+    for (
+        let i = array.length - 1;
+        i > 0;
+        i--
+    ) {
+
+        const j =
+            Math.floor(
+                Math.random() *
+                (i + 1)
+            );
+
+
+        [
+            array[i],
+            array[j]
+        ] =
+        [
+            array[j],
+            array[i]
+        ];
+
+    }
+
+
+    return array;
+
+}
+
+
+/* =========================================================
+   INIT
+   ========================================================= */
+
+renderExpressions();
+
+updateScore();
+
+updateQuizProgress(0);
+
+updateSentenceProgress(0);
+
+progressFill.style.width =
+    "0%";
+
+progressText.textContent =
+    "0 / 12";
+
+</script>
+
+</body>
+</html>
