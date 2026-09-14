@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>WORD RUSH — 영단어 타자 연습</title>
+<style>
+:root{--bg:#151619;--panel:#24252a;--panel2:#2b2c32;--pink:#FF4E6B;--red:#FF0436;--text:#f5f5f7;--muted:#9b9ca3;--line:rgba(255,255,255,.09)}
+*{box-sizing:border-box}html,body{margin:0;min-height:100%;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans KR",sans-serif;background:var(--bg);color:var(--text)}body{overflow:hidden}.app{min-height:100vh;background:radial-gradient(circle at 50% 0%,rgba(255,78,107,.07),transparent 35%),linear-gradient(145deg,#151619,#1b1c20 60%,#141518)}
+.screen{display:none;min-height:100vh;padding:32px}.screen.active{display:flex}.center{align-items:center;justify-content:center}.glass{background:rgba(35,36,41,.9);border:1px solid var(--line);box-shadow:0 24px 70px rgba(0,0,0,.32);backdrop-filter:blur(18px)}
+.menu-card{width:min(680px,100%);padding:48px;border-radius:36px;text-align:center}.logo{font-size:14px;letter-spacing:.24em;font-weight:800;color:var(--pink);margin-bottom:18px}h1{font-size:clamp(44px,8vw,76px);line-height:.95;margin:0 0 18px;letter-spacing:-.055em}.subtitle{color:var(--muted);font-size:16px;line-height:1.65;margin:0 auto 34px;max-width:530px}.settings{display:grid;grid-template-columns:1fr 1fr;gap:12px;text-align:left;margin-bottom:22px}.setting{background:rgba(255,255,255,.045);border:1px solid var(--line);border-radius:20px;padding:18px}.setting label{display:block;color:var(--muted);font-size:12px;margin-bottom:9px}select{width:100%;background:#191a1e;color:var(--text);border:1px solid var(--line);border-radius:13px;padding:11px 12px;outline:0}.btn{border:0;color:#fff;background:linear-gradient(135deg,var(--pink),var(--red));border-radius:17px;padding:15px 22px;font-weight:800;cursor:pointer;min-height:54px;display:inline-flex;align-items:center;justify-content:center;gap:8px;transition:transform .16s ease,filter .16s ease}.btn:hover{transform:scale(1.018);filter:brightness(1.05)}.btn:active{transform:scale(.975)}.btn.secondary{background:rgba(255,255,255,.07);border:1px solid var(--line)}.tip{font-size:12px;color:#777980;margin-top:17px}
+.game{width:min(1180px,100%);height:min(820px,calc(100vh - 64px));margin:auto;display:flex;flex-direction:column;gap:14px}.hud{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:16px}.hud-left,.hud-right{display:flex;align-items:center;gap:18px}.hud-right{justify-content:flex-end}.stat-label{font-size:11px;color:var(--muted);display:block}.stat-value{font-size:22px;font-weight:800}.timer{font-size:34px;font-weight:900;letter-spacing:-.04em}.timer.danger{color:var(--red);animation:pulse .7s infinite alternate}@keyframes pulse{to{opacity:.55}}
+.game-board{position:relative;flex:1;min-height:400px;border-radius:30px;overflow:hidden;background:linear-gradient(180deg,rgba(255,255,255,.025),rgba(255,255,255,.01)),repeating-linear-gradient(0deg,transparent 0 59px,rgba(255,255,255,.025) 60px),repeating-linear-gradient(90deg,transparent 0 59px,rgba(255,255,255,.018) 60px);border:1px solid var(--line)}.board-top{position:absolute;top:18px;left:20px;right:20px;display:flex;justify-content:space-between;color:var(--muted);font-size:12px;z-index:4;pointer-events:none}.word{position:absolute;z-index:2;padding:12px 17px;border-radius:15px;background:#2a2b30;border:1px solid rgba(255,255,255,.12);font-size:20px;font-weight:750;letter-spacing:-.02em;white-space:nowrap;box-shadow:0 10px 25px rgba(0,0,0,.22);user-select:none;transition:border-color .12s}.word.near{border-color:rgba(255,78,107,.7);box-shadow:0 0 0 1px rgba(255,78,107,.15),0 10px 30px rgba(255,4,54,.08)}.word.hit{animation:hit .22s ease forwards}.word.missed{animation:miss .18s ease forwards}@keyframes hit{to{transform:scale(1.25);opacity:0}}@keyframes miss{to{transform:translateY(8px);opacity:0}}
+.input-wrap{height:76px;display:flex;align-items:center;gap:14px;padding:10px 16px;border-radius:22px;background:rgba(35,36,41,.94);border:1px solid var(--line)}.input-prefix{font-size:22px;color:var(--pink);font-weight:900}#typingDisplay{flex:1;font-size:23px;font-weight:700;min-width:0;white-space:nowrap;overflow:hidden}#typingDisplay .placeholder{color:#62636a;font-weight:500}.kbd{font-size:11px;color:#777980;border:1px solid var(--line);padding:7px 9px;border-radius:9px}
+.result-card{width:min(620px,100%);padding:42px;border-radius:34px;text-align:center}.result-title{font-size:46px;font-weight:900;letter-spacing:-.05em;margin:0 0 8px}.score{font-size:72px;font-weight:950;color:var(--pink);letter-spacing:-.07em;margin:15px 0}.result-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:24px 0 28px}.result-stat{background:rgba(255,255,255,.045);border:1px solid var(--line);border-radius:18px;padding:17px}.result-stat b{font-size:25px;display:block}.result-stat span{font-size:11px;color:var(--muted)}.actions{display:flex;gap:10px}.actions .btn{flex:1}
+@media(max-width:650px){.screen{padding:16px}.menu-card{padding:30px 20px}.settings{grid-template-columns:1fr}.game{height:calc(100vh - 32px)}.hud{grid-template-columns:1fr auto}.hud-right{display:none}.timer{font-size:29px}.word{font-size:17px;padding:10px 13px}.result-card{padding:30px 20px}}@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}}
+</style>
+</head>
+<body>
+<div class="app">
+<section id="menuScreen" class="screen active center">
+<div class="menu-card glass">
+<div class="logo">ENGLISH TYPING GAME</div>
+<h1>WORD<br>RUSH</h1>
+<p class="subtitle">화면에 나타나는 영어 단어를 보고 정확하게 입력하세요.<br>빠르게 입력할수록 더 높은 점수를 얻을 수 있습니다.</p>
+<div class="settings">
+<div class="setting"><label for="difficulty">난이도</label><select id="difficulty"><option value="easy">Easy · A2</option><option value="normal" selected>Normal · A2–B1</option><option value="hard">Hard · B1</option></select></div>
+<div class="setting"><label for="duration">플레이 시간</label><select id="duration"><option value="30">30초</option><option value="60" selected>60초</option><option value="90">90초</option></select></div>
+</div>
+<button class="btn" id="startBtn">게임 시작</button>
+<div class="tip">키보드로 단어를 입력하고 Enter를 누르거나 단어를 완성하면 자동으로 제거됩니다.</div>
+</div>
+</section>
+
+<section id="gameScreen" class="screen center">
+<div class="game">
+<div class="hud"><div class="hud-left"><div><span class="stat-label">SCORE</span><span id="score" class="stat-value">0</span></div><div><span class="stat-label">COMBO</span><span id="combo" class="stat-value">0</span></div></div><div id="timer" class="timer">60.0</div><div class="hud-right"><div><span class="stat-label">CLEARED</span><span id="cleared" class="stat-value">0</span></div><div><span class="stat-label">MISSED</span><span id="missed" class="stat-value">0</span></div></div></div>
+<div id="board" class="game-board"><div class="board-top"><span>TYPE THE WORD</span><span id="difficultyLabel">NORMAL</span></div></div>
+<div class="input-wrap"><span class="input-prefix">›</span><div id="typingDisplay"><span class="placeholder">단어를 입력하세요</span></div><span class="kbd">ENTER</span></div>
+</div>
+</section>
+
+<section id="resultScreen" class="screen center">
+<div class="result-card glass"><div class="logo">ROUND COMPLETE</div><h2 class="result-title">학습 완료</h2><div id="finalScore" class="score">0</div><div class="result-grid"><div class="result-stat"><b id="finalCleared">0</b><span>맞힌 단어</span></div><div class="result-stat"><b id="finalMissed">0</b><span>놓친 단어</span></div><div class="result-stat"><b id="finalAccuracy">0%</b><span>정확도</span></div></div><div class="actions"><button class="btn secondary" id="menuBtn">메뉴로</button><button class="btn" id="retryBtn">다시 하기</button></div></div>
+</section>
+</div>
+<script>
+(()=> {
+const WORDS=[
+["arrive","도착하다","easy"],["borrow","빌리다","easy"],["choose","선택하다","easy"],["danger","위험","easy"],["decide","결정하다","easy"],["enough","충분한","easy"],["future","미래","easy"],["healthy","건강한","easy"],["invite","초대하다","easy"],["message","메시지","easy"],["notice","알아차리다","easy"],["practice","연습하다","easy"],["remember","기억하다","easy"],["simple","간단한","easy"],["travel","여행하다","easy"],["useful","유용한","easy"],
+["answer","대답하다","normal"],["believe","믿다","normal"],["careful","조심스러운","normal"],["create","만들다","normal"],["discover","발견하다","normal"],["effort","노력","normal"],["improve","향상시키다","normal"],["include","포함하다","normal"],["instead","대신에","normal"],["journey","여정","normal"],["likely","~할 것 같은","normal"],["protect","보호하다","normal"],["provide","제공하다","normal"],["reduce","줄이다","normal"],["remain","남아 있다","normal"],["solution","해결책","normal"],["support","지원하다","normal"],["suggest","제안하다","normal"],
+["achieve","성취하다","hard"],["approach","접근하다","hard"],["challenge","도전","hard"],["communicate","소통하다","hard"],["environment","환경","hard"],["experience","경험","hard"],["independent","독립적인","hard"],["opportunity","기회","hard"],["participate","참여하다","hard"],["responsible","책임감 있는","hard"],["specific","구체적인","hard"],["understand","이해하다","hard"]
+].map(x=>({w:x[0],m:x[1],d:x[2]}));
+
+const $=id=>document.getElementById(id), screens=[$("menuScreen"),$("gameScreen"),$("resultScreen")];
+let difficulty="normal",duration=60,running=false,score=0,combo=0,cleared=0,missed=0,typed="",active=[],spawnTimer=0,last=0,endAt=0,raf=0;
+const speed={easy:26,normal:32,hard:39}, spawn={easy:1450,normal:1150,hard:900}, density={easy:4,normal:5,hard:6};
+
+function show(s){screens.forEach(x=>x.classList.remove("active"));s.classList.add("active")}
+function pool(){return WORDS.filter(x=>difficulty==="easy"?x.d!=="hard":difficulty==="hard"?x.d!=="easy":true)}
+function randomWord(){let p=pool();return p[Math.floor(Math.random()*p.length)]}
+function updateTyping(){$("typingDisplay").innerHTML=typed?typed.replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[c])):'<span class="placeholder">단어를 입력하세요</span>'}
+function hud(){$("score").textContent=score;$("combo").textContent=combo;$("cleared").textContent=cleared;$("missed").textContent=missed}
+function spawnWord(){let b=$("board"),item=randomWord(),el=document.createElement("div");el.className="word";el.textContent=item.w;el.style.left=(20+Math.random()*Math.max(20,b.clientWidth-190))+"px";el.style.top="-50px";b.appendChild(el);active.push({el,word:item.w,y:-50,velocity:speed[difficulty]*(.85+Math.random()*.35)})}
+function remove(o,hit){let i=active.indexOf(o);if(i>=0)active.splice(i,1);o.el.classList.add(hit?"hit":"missed");setTimeout(()=>o.el.remove(),220)}
+function tryClear(){let o=active.find(x=>x.word===typed);if(!o)return false;remove(o,true);cleared++;combo++;score+=10+Math.min(combo,20)*2;typed="";updateTyping();hud();return true}
+function near(){active.forEach(o=>o.el.classList.toggle("near",!!typed&&o.word.startsWith(typed)))}
+function loop(now){if(!running)return;let dt=Math.min(80,now-last||16);last=now;let remain=Math.max(0,endAt-performance.now());$("timer").textContent=(remain/1000).toFixed(1);$("timer").classList.toggle("danger",remain<=10000);spawnTimer+=dt;if(spawnTimer>=spawn[difficulty]&&active.length<density[difficulty]){spawnWord();spawnTimer=0}let bottom=$("board").clientHeight-54;active.slice().forEach(o=>{o.y+=o.velocity*dt/1000;o.el.style.transform=`translate3d(0,${o.y}px,0)`;if(o.y>bottom){remove(o,false);missed++;combo=0;hud()}});if(remain<=0){finish();return}raf=requestAnimationFrame(loop)}
+function start(){difficulty=$("difficulty").value;duration=+$("duration").value;score=combo=cleared=missed=0;typed="";active=[];$("board").querySelectorAll(".word").forEach(e=>e.remove());$("difficultyLabel").textContent=difficulty.toUpperCase();$("timer").classList.remove("danger");updateTyping();hud();show($("gameScreen"));running=true;endAt=performance.now()+duration*1000;spawnTimer=0;last=performance.now();cancelAnimationFrame(raf);raf=requestAnimationFrame(loop)}
+function finish(){running=false;cancelAnimationFrame(raf);$("finalScore").textContent=score;$("finalCleared").textContent=cleared;$("finalMissed").textContent=missed;let total=cleared+missed;$("finalAccuracy").textContent=total?Math.round(cleared/total*100)+"%":"0%";show($("resultScreen"))}
+
+document.addEventListener("keydown",e=>{
+ if(!running)return;
+ if(e.key==="Enter"){e.preventDefault();tryClear();return}
+ if(e.key==="Escape"){finish();return}
+ if(e.key==="Backspace"){e.preventDefault();typed=typed.slice(0,-1);updateTyping();near();return}
+ if(e.key.length===1&&/[a-zA-Z]/.test(e.key)){typed+=e.key.toLowerCase();if(typed.length>24)typed=typed.slice(0,24);if(!tryClear()){updateTyping();near()}}
+});
+$("startBtn").onclick=start;$("retryBtn").onclick=start;$("menuBtn").onclick=()=>{running=false;cancelAnimationFrame(raf);show($("menuScreen"))};
+})();
+</script>
+</body>
+</html>
