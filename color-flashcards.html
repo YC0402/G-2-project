@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Color Friends! - English Color Flashcards</title>
+<style>
+    * { box-sizing: border-box; }
+    body {
+        margin: 0;
+        min-height: 100vh;
+        font-family: Arial, "Noto Sans", sans-serif;
+        background: linear-gradient(135deg, #dbeafe, #fef3c7, #fce7f3);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 20px;
+        color: #1f2937;
+    }
+    .app {
+        width: min(900px, 100%);
+        background: rgba(255,255,255,.95);
+        border-radius: 28px;
+        padding: 28px;
+        box-shadow: 0 18px 50px rgba(0,0,0,.14);
+    }
+    h1 {
+        margin: 0;
+        text-align: center;
+        font-size: clamp(2rem, 6vw, 3.2rem);
+        color: #2563eb;
+    }
+    .subtitle {
+        text-align: center;
+        margin: 6px 0 20px;
+        font-size: 1.05rem;
+        color: #64748b;
+    }
+    .tabs {
+        display: flex;
+        gap: 10px;
+        justify-content: center;
+        margin-bottom: 20px;
+    }
+    .tab {
+        border: 0;
+        border-radius: 999px;
+        padding: 12px 24px;
+        font-size: 1rem;
+        font-weight: 800;
+        cursor: pointer;
+        background: #e5e7eb;
+        color: #374151;
+    }
+    .tab.active {
+        background: #2563eb;
+        color: white;
+    }
+    .progress-wrap {
+        margin-bottom: 18px;
+    }
+    .progress-info {
+        display: flex;
+        justify-content: space-between;
+        font-weight: 700;
+        color: #64748b;
+        margin-bottom: 7px;
+    }
+    .progress {
+        height: 12px;
+        background: #e5e7eb;
+        border-radius: 999px;
+        overflow: hidden;
+    }
+    .progress-bar {
+        height: 100%;
+        width: 10%;
+        background: #2563eb;
+        border-radius: 999px;
+        transition: width .25s ease;
+    }
+    .card {
+        min-height: 430px;
+        border-radius: 24px;
+        background: #f8fafc;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        padding: 30px 20px;
+        border: 4px solid #e5e7eb;
+    }
+    .object {
+        font-size: clamp(7rem, 20vw, 11rem);
+        line-height: 1;
+        margin-bottom: 18px;
+        filter: drop-shadow(0 8px 7px rgba(0,0,0,.12));
+    }
+    .word {
+        font-size: clamp(3rem, 10vw, 6rem);
+        font-weight: 900;
+        letter-spacing: 1px;
+        margin: 0;
+    }
+    .korean {
+        margin-top: 8px;
+        font-size: 1.6rem;
+        font-weight: 800;
+        color: #64748b;
+    }
+    .example {
+        margin-top: 10px;
+        font-size: 1rem;
+        color: #64748b;
+    }
+    .nav {
+        display: flex;
+        justify-content: space-between;
+        gap: 12px;
+        margin-top: 20px;
+    }
+    .nav-btn {
+        flex: 1;
+        border: 0;
+        border-radius: 16px;
+        padding: 15px 18px;
+        font-size: 1.1rem;
+        font-weight: 900;
+        cursor: pointer;
+        transition: .15s ease;
+        background: #e5e7eb;
+        color: #374151;
+    }
+    .nav-btn:hover {
+        transform: translateY(-2px);
+    }
+    .nav-btn.next {
+        background: #2563eb;
+        color: #ffffff;
+        box-shadow:
+            0 7px 18px rgba(37, 99, 235, 0.30),
+            0 3px 0 #1746a2;
+    }
+    .nav-btn.next:hover {
+        background: #1d4ed8;
+        transform: translateY(-3px);
+    }
+    .nav-btn.next:active {
+        background: #1e40af;
+        transform: translateY(1px);
+        box-shadow: 0 3px 8px rgba(37, 99, 235, 0.25);
+    }
+    .dots {
+        display: flex;
+        justify-content: center;
+        gap: 8px;
+        flex-wrap: wrap;
+        margin-top: 18px;
+    }
+    .dot {
+        width: 17px;
+        height: 17px;
+        border-radius: 50%;
+        border: 3px solid white;
+        outline: 2px solid #cbd5e1;
+        cursor: pointer;
+    }
+    .dot.active {
+        transform: scale(1.35);
+        outline-color: #2563eb;
+    }
+
+    /* Test */
+    .test-card {
+        min-height: 430px;
+        border-radius: 24px;
+        background: #f8fafc;
+        border: 4px solid #e5e7eb;
+        padding: 28px 20px;
+        text-align: center;
+    }
+    .test-title {
+        font-size: clamp(1.5rem, 5vw, 2.3rem);
+        font-weight: 900;
+        margin: 0 0 18px;
+    }
+    .test-object {
+        font-size: clamp(6rem, 18vw, 9rem);
+        line-height: 1;
+        margin-bottom: 20px;
+    }
+    .choices {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+        max-width: 620px;
+        margin: 0 auto;
+    }
+    .choice {
+        border: 0;
+        border-radius: 16px;
+        padding: 17px 12px;
+        background: white;
+        box-shadow: 0 5px 14px rgba(0,0,0,.08);
+        font-size: 1.2rem;
+        font-weight: 900;
+        cursor: pointer;
+        transition: .15s ease;
+    }
+    .choice:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 18px rgba(0,0,0,.12);
+    }
+    .choice.correct {
+        background: #dcfce7;
+        color: #166534;
+        outline: 4px solid #22c55e;
+    }
+    .choice.wrong {
+        background: #fee2e2;
+        color: #991b1b;
+        outline: 4px solid #ef4444;
+    }
+    .feedback {
+        min-height: 42px;
+        margin-top: 18px;
+        font-size: 1.15rem;
+        font-weight: 900;
+    }
+    .score {
+        text-align: center;
+        margin-top: 14px;
+        font-weight: 900;
+        color: #475569;
+    }
+    .hidden { display: none !important; }
+
+    .result {
+        text-align: center;
+        padding: 45px 20px;
+    }
+    .result-emoji {
+        font-size: 6rem;
+    }
+    .result h2 {
+        font-size: 2.4rem;
+        margin: 12px 0;
+    }
+    .result p {
+        font-size: 1.3rem;
+        color: #64748b;
+    }
+    .retry {
+        border: 0;
+        border-radius: 16px;
+        padding: 15px 28px;
+        font-size: 1.1rem;
+        font-weight: 900;
+        cursor: pointer;
+        background: #2563eb;
+        color: white;
+        box-shadow: 0 6px 0 #1746a2;
+    }
+    .retry:active {
+        transform: translateY(3px);
+        box-shadow: 0 3px 0 #1746a2;
+    }
+
+    @media (max-width: 600px) {
+        body { padding: 10px; }
+        .app { padding: 18px; border-radius: 22px; }
+        .card, .test-card { min-height: 390px; }
+        .choices { grid-template-columns: 1fr; }
+        .nav-btn { padding: 13px 10px; font-size: 1rem; }
+    }
+</style>
+</head>
+<body>
+<div class="app">
+    <h1>🌈 Color Friends!</h1>
+    <div class="subtitle">Let's learn English color words!</div>
+
+    <div class="tabs">
+        <button class="tab active" id="learnTab">📚 Learn</button>
+        <button class="tab" id="testTab">🎯 Test</button>
+    </div>
+
+    <section id="learnSection">
+        <div class="progress-wrap">
+            <div class="progress-info">
+                <span>Learning</span>
+                <span id="progressText">1 / 10</span>
+            </div>
+            <div class="progress">
+                <div class="progress-bar" id="progressBar"></div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="object" id="object">🍎</div>
+            <div class="word" id="word">RED</div>
+            <div class="korean" id="korean">빨강</div>
+            <div class="example" id="example">Apple</div>
+        </div>
+
+        <div class="nav">
+            <button class="nav-btn" id="prevBtn">◀ Previous</button>
+            <button class="nav-btn next" id="nextBtn">Next ▶</button>
+        </div>
+
+        <div class="dots" id="dots"></div>
+    </section>
+
+    <section id="testSection" class="hidden">
+        <div class="progress-wrap">
+            <div class="progress-info">
+                <span>Test</span>
+                <span id="testProgress">1 / 10</span>
+            </div>
+            <div class="progress">
+                <div class="progress-bar" id="testProgressBar"></div>
+            </div>
+        </div>
+
+        <div id="testContent" class="test-card">
+            <div class="test-title">Which word is the color?</div>
+            <div class="test-object" id="testObject">🍎</div>
+            <div class="choices" id="choices"></div>
+            <div class="feedback" id="feedback"></div>
+            <div class="score" id="score">Score: 0</div>
+        </div>
+
+        <div id="resultContent" class="test-card hidden result">
+            <div class="result-emoji" id="resultEmoji">🎉</div>
+            <h2 id="resultTitle">Great Job!</h2>
+            <p id="resultMessage">You did a great job!</p>
+            <button class="retry" id="retryBtn">🔄 Try Again</button>
+        </div>
+    </section>
+</div>
+
+<script>
+const colors = [
+    { word: "RED", korean: "빨강", object: "🍎", example: "Apple", color: "#ef4444" },
+    { word: "ORANGE", korean: "주황", object: "🍊", example: "Orange", color: "#f97316" },
+    { word: "YELLOW", korean: "노랑", object: "🌻", example: "Sunflower", color: "#eab308" },
+    { word: "GREEN", korean: "초록", object: "🍃", example: "Leaf", color: "#22a447" },
+    { word: "BLUE", korean: "파랑", object: "🫐", example: "Blueberry", color: "#2563eb" },
+    { word: "NAVY", korean: "남색", object: "🌌", example: "Night Sky", color: "#172554" },
+    { word: "PURPLE", korean: "보라", object: "🍇", example: "Grapes", color: "#9333ea" },
+    { word: "PINK", korean: "핑크", object: "🌷", example: "Tulip", color: "#ec4899" },
+    { word: "WHITE", korean: "흰색", object: "☁️", example: "Cloud", color: "#b8b8b8" },
+    { word: "BLACK", korean: "검은색", object: "🐼", example: "Panda", color: "#222222" }
+];
+
+let currentIndex = 0;
+let testQuestions = [];
+let testIndex = 0;
+let testScore = 0;
+let answered = false;
+
+const learnTab = document.getElementById("learnTab");
+const testTab = document.getElementById("testTab");
+const learnSection = document.getElementById("learnSection");
+const testSection = document.getElementById("testSection");
+
+const objectEl = document.getElementById("object");
+const wordEl = document.getElementById("word");
+const koreanEl = document.getElementById("korean");
+const exampleEl = document.getElementById("example");
+const progressText = document.getElementById("progressText");
+const progressBar = document.getElementById("progressBar");
+const prevBtn = document.getElementById("prevBtn");
+const nextBtn = document.getElementById("nextBtn");
+const dotsEl = document.getElementById("dots");
+
+const testProgress = document.getElementById("testProgress");
+const testProgressBar = document.getElementById("testProgressBar");
+const testObject = document.getElementById("testObject");
+const choicesEl = document.getElementById("choices");
+const feedbackEl = document.getElementById("feedback");
+const scoreEl = document.getElementById("score");
+const testContent = document.getElementById("testContent");
+const resultContent = document.getElementById("resultContent");
+const resultEmoji = document.getElementById("resultEmoji");
+const resultTitle = document.getElementById("resultTitle");
+const resultMessage = document.getElementById("resultMessage");
+const retryBtn = document.getElementById("retryBtn");
+
+function renderDots() {
+    dotsEl.innerHTML = "";
+    colors.forEach((item, index) => {
+        const dot = document.createElement("button");
+        dot.className = "dot" + (index === currentIndex ? " active" : "");
+        dot.style.background = item.color;
+        dot.title = item.word;
+        dot.setAttribute("aria-label", item.word);
+        dot.addEventListener("click", () => {
+            currentIndex = index;
+            renderLearn();
+        });
+        dotsEl.appendChild(dot);
+    });
+}
+
+function renderLearn() {
+    const item = colors[currentIndex];
+
+    objectEl.textContent = item.object;
+    wordEl.textContent = item.word;
+    wordEl.style.color = item.color;
+    koreanEl.textContent = item.korean;
+    exampleEl.textContent = item.example;
+
+    progressText.textContent = `${currentIndex + 1} / ${colors.length}`;
+    progressBar.style.width = `${((currentIndex + 1) / colors.length) * 100}%`;
+
+    prevBtn.disabled = currentIndex === 0;
+    prevBtn.style.opacity = currentIndex === 0 ? "0.45" : "1";
+
+    nextBtn.textContent =
+        currentIndex === colors.length - 1 ? "⭐ Test Time!" : "Next ▶";
+
+    renderDots();
+}
+
+function startTest() {
+    testQuestions = [...colors].sort(() => Math.random() - 0.5);
+    testIndex = 0;
+    testScore = 0;
+    answered = false;
+    testContent.classList.remove("hidden");
+    resultContent.classList.add("hidden");
+    renderTestQuestion();
+}
+
+function renderTestQuestion() {
+    const current = testQuestions[testIndex];
+    answered = false;
+
+    testProgress.textContent = `${testIndex + 1} / ${testQuestions.length}`;
+    testProgressBar.style.width =
+        `${((testIndex + 1) / testQuestions.length) * 100}%`;
+
+    testObject.textContent = current.object;
+    feedbackEl.textContent = "";
+    scoreEl.textContent = `Score: ${testScore}`;
+    choicesEl.innerHTML = "";
+
+    const wrongAnswers = colors
+        .filter(item => item.word !== current.word)
+        .sort(() => Math.random() - 0.5)
+        .slice(0, 3);
+
+    const choices = [...wrongAnswers, current]
+        .sort(() => Math.random() - 0.5);
+
+    choices.forEach(choice => {
+        const button = document.createElement("button");
+        button.className = "choice";
+        button.textContent = choice.word;
+        button.style.color = choice.color;
+        button.addEventListener("click", () => answerQuestion(button, choice, current));
+        choicesEl.appendChild(button);
+    });
+}
+
+function answerQuestion(button, choice, current) {
+    if (answered) return;
+    answered = true;
+
+    const allChoices = [...choicesEl.querySelectorAll(".choice")];
+
+    if (choice.word === current.word) {
+        testScore++;
+        button.classList.add("correct");
+        feedbackEl.textContent = "🎉 Correct!";
+        feedbackEl.style.color = "#16a34a";
+    } else {
+        button.classList.add("wrong");
+        const correctButton = allChoices.find(
+            b => b.textContent === current.word
+        );
+        if (correctButton) correctButton.classList.add("correct");
+        feedbackEl.textContent = `💡 The answer is ${current.word}!`;
+        feedbackEl.style.color = "#dc2626";
+    }
+
+    scoreEl.textContent = `Score: ${testScore}`;
+
+    setTimeout(() => {
+        if (testIndex < testQuestions.length - 1) {
+            testIndex++;
+            renderTestQuestion();
+        } else {
+            showResult();
+        }
+    }, 900);
+}
+
+function showResult() {
+    testContent.classList.add("hidden");
+    resultContent.classList.remove("hidden");
+
+    const percent = Math.round((testScore / colors.length) * 100);
+
+    if (percent === 100) {
+        resultEmoji.textContent = "🏆";
+        resultTitle.textContent = "Perfect!";
+        resultMessage.textContent = `Amazing! You got ${testScore} / ${colors.length}!`;
+    } else if (percent >= 80) {
+        resultEmoji.textContent = "🎉";
+        resultTitle.textContent = "Great Job!";
+        resultMessage.textContent = `You got ${testScore} / ${colors.length}!`;
+    } else if (percent >= 60) {
+        resultEmoji.textContent = "😊";
+        resultTitle.textContent = "Good Work!";
+        resultMessage.textContent = `You got ${testScore} / ${colors.length}. Keep practicing!`;
+    } else {
+        resultEmoji.textContent = "💪";
+        resultTitle.textContent = "Keep Trying!";
+        resultMessage.textContent = `You got ${testScore} / ${colors.length}. Let's learn the colors again!`;
+    }
+}
+
+function showLearn() {
+    learnTab.classList.add("active");
+    testTab.classList.remove("active");
+    learnSection.classList.remove("hidden");
+    testSection.classList.add("hidden");
+}
+
+function showTest() {
+    learnTab.classList.remove("active");
+    testTab.classList.add("active");
+    learnSection.classList.add("hidden");
+    testSection.classList.remove("hidden");
+    startTest();
+}
+
+prevBtn.addEventListener("click", () => {
+    if (currentIndex > 0) {
+        currentIndex--;
+        renderLearn();
+    }
+});
+
+nextBtn.addEventListener("click", () => {
+    if (currentIndex < colors.length - 1) {
+        currentIndex++;
+        renderLearn();
+    } else {
+        showTest();
+    }
+});
+
+learnTab.addEventListener("click", showLearn);
+testTab.addEventListener("click", showTest);
+retryBtn.addEventListener("click", startTest);
+
+document.addEventListener("keydown", (event) => {
+    if (!learnSection.classList.contains("hidden")) {
+        if (event.key === "ArrowLeft" && currentIndex > 0) {
+            currentIndex--;
+            renderLearn();
+        } else if (event.key === "ArrowRight") {
+            if (currentIndex < colors.length - 1) {
+                currentIndex++;
+                renderLearn();
+            } else {
+                showTest();
+            }
+        }
+    }
+});
+
+renderLearn();
+</script>
+</body>
+</html>
