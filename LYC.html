@@ -1,0 +1,2482 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Recycling Mission - Phrasal Verb Challenge</title>
+
+<style>
+    * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+    }
+
+    :root {
+        --green: #16a34a;
+        --green-dark: #15803d;
+        --green-light: #dcfce7;
+        --blue: #2563eb;
+        --blue-light: #dbeafe;
+        --yellow: #f59e0b;
+        --yellow-light: #fef3c7;
+        --red: #dc2626;
+        --red-light: #fee2e2;
+        --purple: #7c3aed;
+        --purple-light: #ede9fe;
+        --gray-50: #f8fafc;
+        --gray-100: #f1f5f9;
+        --gray-200: #e2e8f0;
+        --gray-500: #64748b;
+        --gray-700: #334155;
+        --gray-900: #0f172a;
+        --white: #ffffff;
+    }
+
+    body {
+        font-family: Arial, Helvetica, sans-serif;
+        background:
+            radial-gradient(circle at top left, #dcfce7 0, transparent 35%),
+            radial-gradient(circle at bottom right, #dbeafe 0, transparent 35%),
+            #f8fafc;
+        color: var(--gray-900);
+        min-height: 100vh;
+    }
+
+    button,
+    input,
+    textarea {
+        font: inherit;
+    }
+
+    button {
+        cursor: pointer;
+    }
+
+    .app {
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+    }
+
+    /* TOP BAR */
+
+    .topbar {
+        position: sticky;
+        top: 0;
+        z-index: 100;
+        background: rgba(255,255,255,0.96);
+        border-bottom: 1px solid var(--gray-200);
+        backdrop-filter: blur(8px);
+    }
+
+    .topbar-inner {
+        max-width: 1100px;
+        margin: auto;
+        padding: 12px 20px;
+        display: flex;
+        align-items: center;
+        gap: 16px;
+    }
+
+    .brand {
+        font-weight: 800;
+        font-size: 20px;
+        color: var(--green-dark);
+        white-space: nowrap;
+    }
+
+    .progress-area {
+        flex: 1;
+    }
+
+    .progress-info {
+        display: flex;
+        justify-content: space-between;
+        font-size: 13px;
+        color: var(--gray-500);
+        margin-bottom: 5px;
+    }
+
+    .progress-track {
+        height: 9px;
+        border-radius: 999px;
+        background: var(--gray-200);
+        overflow: hidden;
+    }
+
+    .progress-bar {
+        height: 100%;
+        width: 0%;
+        background: linear-gradient(90deg, #22c55e, #2563eb);
+        transition: width .4s ease;
+    }
+
+    .timer {
+        min-width: 95px;
+        text-align: center;
+        border-radius: 999px;
+        padding: 8px 13px;
+        background: var(--gray-900);
+        color: white;
+        font-weight: 700;
+        letter-spacing: .5px;
+    }
+
+    .timer.warning {
+        background: var(--yellow);
+    }
+
+    .timer.danger {
+        background: var(--red);
+        animation: pulse 1s infinite;
+    }
+
+    @keyframes pulse {
+        0%,100% { transform: scale(1); }
+        50% { transform: scale(1.04); }
+    }
+
+    /* MAIN */
+
+    main {
+        width: 100%;
+        max-width: 980px;
+        margin: auto;
+        padding: 32px 20px 60px;
+        flex: 1;
+    }
+
+    .screen {
+        display: none;
+        animation: fade .35s ease;
+    }
+
+    .screen.active {
+        display: block;
+    }
+
+    @keyframes fade {
+        from {
+            opacity: 0;
+            transform: translateY(8px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .card {
+        background: rgba(255,255,255,.96);
+        border: 1px solid var(--gray-200);
+        border-radius: 22px;
+        padding: 28px;
+        box-shadow: 0 14px 38px rgba(15,23,42,.07);
+    }
+
+    .hero {
+        text-align: center;
+        padding: 45px 30px;
+    }
+
+    .emoji {
+        font-size: 70px;
+        margin-bottom: 14px;
+    }
+
+    h1 {
+        font-size: clamp(32px, 5vw, 52px);
+        line-height: 1.05;
+        margin-bottom: 12px;
+    }
+
+    h2 {
+        font-size: clamp(25px, 4vw, 34px);
+        margin-bottom: 8px;
+    }
+
+    h3 {
+        margin-bottom: 10px;
+    }
+
+    .subtitle {
+        font-size: 18px;
+        color: var(--gray-500);
+        line-height: 1.6;
+    }
+
+    .stage-label {
+        display: inline-block;
+        padding: 7px 12px;
+        border-radius: 999px;
+        color: var(--green-dark);
+        background: var(--green-light);
+        font-size: 13px;
+        font-weight: 800;
+        margin-bottom: 12px;
+        text-transform: uppercase;
+        letter-spacing: .7px;
+    }
+
+    .instruction {
+        background: var(--blue-light);
+        color: #1e3a8a;
+        border-radius: 15px;
+        padding: 13px 16px;
+        margin: 18px 0;
+        line-height: 1.6;
+    }
+
+    .korean {
+        display: block;
+        margin-top: 4px;
+        font-size: 14px;
+        color: var(--gray-500);
+    }
+
+    /* BUTTONS */
+
+    .btn {
+        border: none;
+        border-radius: 13px;
+        padding: 13px 22px;
+        font-weight: 800;
+        transition: .18s;
+    }
+
+    .btn:hover {
+        transform: translateY(-2px);
+    }
+
+    .btn-primary {
+        background: var(--green);
+        color: white;
+    }
+
+    .btn-primary:hover {
+        background: var(--green-dark);
+    }
+
+    .btn-secondary {
+        background: var(--gray-100);
+        color: var(--gray-700);
+    }
+
+    .btn-blue {
+        background: var(--blue);
+        color: white;
+    }
+
+    .btn-purple {
+        background: var(--purple);
+        color: white;
+    }
+
+    .btn-large {
+        font-size: 18px;
+        padding: 16px 30px;
+    }
+
+    .bottom-nav {
+        margin-top: 25px;
+        display: flex;
+        justify-content: flex-end;
+        gap: 10px;
+    }
+
+    /* INTRO */
+
+    .goal-box {
+        margin: 28px auto;
+        max-width: 650px;
+        text-align: left;
+        background: var(--gray-50);
+        padding: 20px;
+        border-radius: 18px;
+    }
+
+    .goal-row {
+        padding: 9px 0;
+        border-bottom: 1px solid var(--gray-200);
+    }
+
+    .goal-row:last-child {
+        border-bottom: none;
+    }
+
+    /* STORY */
+
+    .story {
+        font-size: 19px;
+        line-height: 2;
+        background: #f8fafc;
+        padding: 22px;
+        border-radius: 18px;
+        margin-top: 18px;
+    }
+
+    .target {
+        display: inline-block;
+        background: var(--yellow-light);
+        color: #92400e;
+        padding: 1px 7px;
+        border-radius: 7px;
+        font-weight: 800;
+        cursor: pointer;
+        transition: .15s;
+    }
+
+    .target:hover,
+    .target.selected {
+        background: #fbbf24;
+        color: #422006;
+        transform: translateY(-1px);
+    }
+
+    .meaning-display {
+        min-height: 92px;
+        margin-top: 18px;
+        border: 2px dashed var(--gray-200);
+        border-radius: 16px;
+        padding: 17px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        color: var(--gray-500);
+    }
+
+    .meaning-display strong {
+        color: var(--green-dark);
+        font-size: 20px;
+    }
+
+    /* VOCAB CARDS */
+
+    .expression-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 12px;
+        margin-top: 20px;
+    }
+
+    .expression-card {
+        background: white;
+        border: 2px solid var(--gray-200);
+        border-radius: 14px;
+        padding: 16px 10px;
+        text-align: center;
+        font-weight: 800;
+    }
+
+    .expression-card span {
+        display: block;
+        color: var(--gray-500);
+        font-size: 13px;
+        font-weight: normal;
+        margin-top: 6px;
+    }
+
+    /* QUESTION */
+
+    .question-count {
+        font-size: 14px;
+        color: var(--gray-500);
+        margin-bottom: 8px;
+    }
+
+    .question {
+        font-size: 23px;
+        font-weight: 800;
+        line-height: 1.45;
+        margin: 15px 0 20px;
+    }
+
+    .options {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+    }
+
+    .option {
+        padding: 16px;
+        border: 2px solid var(--gray-200);
+        background: white;
+        border-radius: 14px;
+        text-align: left;
+        font-weight: 700;
+        transition: .15s;
+    }
+
+    .option:hover:not(:disabled) {
+        border-color: var(--blue);
+        background: var(--blue-light);
+    }
+
+    .option.correct {
+        border-color: var(--green);
+        background: var(--green-light);
+        color: var(--green-dark);
+    }
+
+    .option.wrong {
+        border-color: var(--red);
+        background: var(--red-light);
+        color: #991b1b;
+    }
+
+    .feedback {
+        display: none;
+        margin-top: 18px;
+        padding: 15px 17px;
+        border-radius: 14px;
+        line-height: 1.55;
+    }
+
+    .feedback.show {
+        display: block;
+    }
+
+    .feedback.correct {
+        color: #166534;
+        background: var(--green-light);
+    }
+
+    .feedback.wrong {
+        color: #991b1b;
+        background: var(--red-light);
+    }
+
+    /* MISSION */
+
+    .mission-header {
+        background: linear-gradient(135deg, #166534, #16a34a);
+        color: white;
+        border-radius: 18px;
+        padding: 23px;
+        margin: 18px 0;
+    }
+
+    .mission-header p {
+        line-height: 1.6;
+        opacity: .95;
+    }
+
+    .scenario {
+        font-size: 21px;
+        line-height: 1.6;
+        margin: 20px 0;
+        padding: 22px;
+        border-radius: 16px;
+        background: var(--gray-50);
+        border-left: 6px solid var(--green);
+    }
+
+    .phrase-bank {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 9px;
+        margin: 18px 0;
+    }
+
+    .phrase-chip {
+        border: 2px solid var(--gray-200);
+        background: white;
+        padding: 10px 15px;
+        border-radius: 999px;
+        font-weight: 800;
+    }
+
+    .phrase-chip:hover:not(:disabled) {
+        border-color: var(--purple);
+        color: var(--purple);
+    }
+
+    .phrase-chip.correct {
+        color: var(--green-dark);
+        background: var(--green-light);
+        border-color: var(--green);
+    }
+
+    .phrase-chip.wrong {
+        color: #991b1b;
+        background: var(--red-light);
+        border-color: var(--red);
+    }
+
+    /* PRODUCTION */
+
+    .prompt-box {
+        padding: 19px;
+        border-radius: 16px;
+        background: var(--purple-light);
+        color: #4c1d95;
+        margin: 18px 0;
+        line-height: 1.55;
+    }
+
+    textarea {
+        width: 100%;
+        min-height: 115px;
+        resize: vertical;
+        border: 2px solid var(--gray-200);
+        border-radius: 15px;
+        padding: 15px;
+        outline: none;
+        line-height: 1.6;
+    }
+
+    textarea:focus {
+        border-color: var(--purple);
+    }
+
+    .sentence-helper {
+        margin-top: 13px;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+    }
+
+    .helper {
+        padding: 7px 10px;
+        border-radius: 8px;
+        background: var(--gray-100);
+        color: var(--gray-700);
+        font-size: 13px;
+        cursor: pointer;
+    }
+
+    .checklist {
+        margin-top: 18px;
+        padding: 17px;
+        border-radius: 15px;
+        background: var(--gray-50);
+    }
+
+    .check-row {
+        display: flex;
+        align-items: center;
+        gap: 9px;
+        margin: 8px 0;
+    }
+
+    .model-answer {
+        display: none;
+        padding: 17px;
+        background: var(--green-light);
+        border-radius: 14px;
+        margin-top: 15px;
+        line-height: 1.6;
+    }
+
+    /* SCORE */
+
+    .score-circle {
+        width: 150px;
+        height: 150px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, #22c55e, #2563eb);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        color: white;
+        margin: 25px auto;
+        box-shadow: 0 10px 30px rgba(37,99,235,.2);
+    }
+
+    .score-circle .number {
+        font-size: 47px;
+        line-height: 1;
+        font-weight: 900;
+    }
+
+    .score-circle .label {
+        font-size: 13px;
+        margin-top: 5px;
+    }
+
+    .result-grid {
+        display: grid;
+        grid-template-columns: repeat(3,1fr);
+        gap: 12px;
+        margin: 25px 0;
+    }
+
+    .result-box {
+        padding: 18px;
+        text-align: center;
+        background: var(--gray-50);
+        border-radius: 15px;
+    }
+
+    .result-box strong {
+        display: block;
+        font-size: 25px;
+        margin-bottom: 5px;
+    }
+
+    .review-list {
+        text-align: left;
+        margin: 20px auto;
+        max-width: 600px;
+    }
+
+    .review-item {
+        display: grid;
+        grid-template-columns: 155px 1fr;
+        gap: 10px;
+        padding: 9px 0;
+        border-bottom: 1px solid var(--gray-200);
+    }
+
+    .review-item strong {
+        color: var(--green-dark);
+    }
+
+    .hidden {
+        display: none !important;
+    }
+
+    @media (max-width: 700px) {
+        .topbar-inner {
+            flex-wrap: wrap;
+        }
+
+        .brand {
+            width: 100%;
+        }
+
+        .timer {
+            min-width: 82px;
+        }
+
+        .expression-grid,
+        .result-grid {
+            grid-template-columns: 1fr 1fr;
+        }
+
+        .options {
+            grid-template-columns: 1fr;
+        }
+
+        .card {
+            padding: 20px;
+        }
+
+        .story {
+            font-size: 17px;
+        }
+
+        .review-item {
+            grid-template-columns: 1fr;
+        }
+    }
+</style>
+</head>
+
+<body>
+
+<div class="app">
+
+    <div class="topbar">
+        <div class="topbar-inner">
+
+            <div class="brand">
+                ♻️ Recycling Mission
+            </div>
+
+            <div class="progress-area">
+                <div class="progress-info">
+                    <span id="stageText">Ready</span>
+                    <span id="progressPercent">0%</span>
+                </div>
+
+                <div class="progress-track">
+                    <div class="progress-bar" id="progressBar"></div>
+                </div>
+            </div>
+
+            <div class="timer" id="timer">
+                10:00
+            </div>
+
+        </div>
+    </div>
+
+
+    <main>
+
+        <!-- ===================================================
+        SCREEN 0 - START
+        ==================================================== -->
+
+        <section class="screen active" id="screen0">
+            <div class="card hero">
+
+                <div class="emoji">♻️</div>
+
+                <h1>
+                    Recycling Mission
+                </h1>
+
+                <p class="subtitle">
+                    Learn 6 useful English expressions and help your school
+                    start a successful recycling project.
+                </p>
+
+                <div class="goal-box">
+
+                    <div class="goal-row">
+                        ⏱️ <strong>Time:</strong> about 10 minutes
+                    </div>
+
+                    <div class="goal-row">
+                        🎯 <strong>Goal:</strong> Understand and use 6 expressions
+                    </div>
+
+                    <div class="goal-row">
+                        🏆 <strong>Mission:</strong> Become a Recycling Language Master
+                    </div>
+
+                </div>
+
+                <p style="margin-bottom:20px; color:#64748b;">
+                    You will learn:
+                    <strong>find out, set up, sort out, pay attention to,
+                    come up with, carry out</strong>
+                </p>
+
+                <button class="btn btn-primary btn-large"
+                        onclick="startApp()">
+                    Start Mission →
+                </button>
+
+            </div>
+        </section>
+
+
+        <!-- ===================================================
+        SCREEN 1 - NOTICE
+        ==================================================== -->
+
+        <section class="screen" id="screen1">
+
+            <div class="card">
+
+                <span class="stage-label">
+                    Stage 1 · Explore
+                </span>
+
+                <h2>
+                    Read the Recycling Story
+                </h2>
+
+                <div class="instruction">
+                    Click each <strong>highlighted expression</strong>
+                    to check its meaning.
+                    <span class="korean">
+                        강조된 표현을 눌러 의미와 사용법을 확인하세요.
+                    </span>
+                </div>
+
+                <div class="story">
+
+                    A group of students wanted to
+                    <span class="target"
+                          onclick="showMeaning(this,'find out')">
+                        find out
+                    </span>
+                    how much waste their school produced each day.
+
+                    They decided to
+                    <span class="target"
+                          onclick="showMeaning(this,'set up')">
+                        set up
+                    </span>
+                    recycling boxes for paper and plastic.
+
+                    They also asked classmates to
+                    <span class="target"
+                          onclick="showMeaning(this,'sort out')">
+                        sort out
+                    </span>
+                    their waste carefully.
+
+                    At first, many students did not
+                    <span class="target"
+                          onclick="showMeaning(this,'pay attention to')">
+                        pay attention to
+                    </span>
+                    the recycling signs, so the team
+
+                    <span class="target"
+                          onclick="showMeaning(this,'come up with')">
+                        came up with
+                    </span>
+                    a simple points game.
+
+                    With more students joining the project,
+                    the team was able to
+                    <span class="target"
+                          onclick="showMeaning(this,'carry out')">
+                        carry out
+                    </span>
+                    the plan for an entire month.
+
+                </div>
+
+                <div class="meaning-display" id="meaningDisplay">
+                    👆 Click an expression in the story.
+                </div>
+
+                <div class="bottom-nav">
+                    <button class="btn btn-primary"
+                            onclick="goToScreen(2)">
+                        I understand → Practice
+                    </button>
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- ===================================================
+        SCREEN 2 - VOCAB REVIEW
+        ==================================================== -->
+
+        <section class="screen" id="screen2">
+
+            <div class="card">
+
+                <span class="stage-label">
+                    Stage 2 · Meaning Check
+                </span>
+
+                <h2>
+                    Match the Meaning
+                </h2>
+
+                <div class="instruction">
+                    Choose the English expression that best matches the meaning.
+                    <span class="korean">
+                        뜻에 가장 잘 맞는 영어 표현을 고르세요.
+                    </span>
+                </div>
+
+                <div id="meaningQuiz"></div>
+
+            </div>
+
+        </section>
+
+
+        <!-- ===================================================
+        SCREEN 3 - CONTEXT
+        ==================================================== -->
+
+        <section class="screen" id="screen3">
+
+            <div class="card">
+
+                <span class="stage-label">
+                    Stage 3 · Use in Context
+                </span>
+
+                <h2>
+                    Which Expression Fits?
+                </h2>
+
+                <div class="instruction">
+                    Read the situation carefully.
+                    Choose the expression that sounds most natural.
+                    <span class="korean">
+                        상황을 읽고 가장 자연스러운 표현을 선택하세요.
+                    </span>
+                </div>
+
+                <div id="contextQuiz"></div>
+
+            </div>
+
+        </section>
+
+
+        <!-- ===================================================
+        SCREEN 4 - MISSION GAME
+        ==================================================== -->
+
+        <section class="screen" id="screen4">
+
+            <div class="card">
+
+                <span class="stage-label">
+                    Stage 4 · Recycling Mission
+                </span>
+
+                <h2>
+                    Save the School Project!
+                </h2>
+
+                <div class="mission-header">
+                    <h3>🏫 Your Situation</h3>
+                    <p>
+                        Your school wants to reduce waste.
+                        Complete each step of the project by choosing
+                        the best expression.
+                    </p>
+                </div>
+
+                <div id="missionGame"></div>
+
+            </div>
+
+        </section>
+
+
+        <!-- ===================================================
+        SCREEN 5 - PRODUCTION
+        ==================================================== -->
+
+        <section class="screen" id="screen5">
+
+            <div class="card">
+
+                <span class="stage-label">
+                    Stage 5 · Your Turn
+                </span>
+
+                <h2>
+                    Make Your Own Sentence
+                </h2>
+
+                <div class="instruction">
+                    Choose <strong>ONE</strong> expression and write
+                    your own sentence.
+                    <span class="korean">
+                        표현 하나를 골라 직접 영어 문장을 만들어 보세요.
+                    </span>
+                </div>
+
+                <div class="prompt-box">
+                    💡 <strong>Situation:</strong><br><br>
+                    Imagine your class wants to improve something at school.
+                    What could you investigate, organize, solve, notice,
+                    create, or do?
+                </div>
+
+                <label for="finalExpression">
+                    <strong>1. Choose an expression:</strong>
+                </label>
+
+                <select id="finalExpression"
+                        style="
+                            width:100%;
+                            margin-top:8px;
+                            padding:13px;
+                            border-radius:12px;
+                            border:2px solid #e2e8f0;
+                        "
+                        onchange="updateWritingHint()">
+
+                    <option value="">
+                        -- Choose --
+                    </option>
+
+                    <option value="find out">
+                        find out
+                    </option>
+
+                    <option value="set up">
+                        set up
+                    </option>
+
+                    <option value="sort out">
+                        sort out
+                    </option>
+
+                    <option value="pay attention to">
+                        pay attention to
+                    </option>
+
+                    <option value="come up with">
+                        come up with
+                    </option>
+
+                    <option value="carry out">
+                        carry out
+                    </option>
+
+                </select>
+
+
+                <div id="writingHint"
+                     class="prompt-box hidden">
+                </div>
+
+
+                <label for="studentSentence">
+                    <strong>2. Write your sentence:</strong>
+                </label>
+
+                <textarea id="studentSentence"
+                          placeholder="Example: Our class will ..."></textarea>
+
+
+                <div class="sentence-helper">
+
+                    <span class="helper"
+                          onclick="addText('Our class ')">
+                        Our class...
+                    </span>
+
+                    <span class="helper"
+                          onclick="addText('We should ')">
+                        We should...
+                    </span>
+
+                    <span class="helper"
+                          onclick="addText('The students ')">
+                        The students...
+                    </span>
+
+                    <span class="helper"
+                          onclick="addText('a new idea ')">
+                        a new idea
+                    </span>
+
+                    <span class="helper"
+                          onclick="addText('for our school ')">
+                        for our school
+                    </span>
+
+                </div>
+
+
+                <div class="checklist">
+
+                    <strong>Self-check ✓</strong>
+
+                    <label class="check-row">
+                        <input type="checkbox"
+                               class="selfCheck">
+                        I used one target expression.
+                    </label>
+
+                    <label class="check-row">
+                        <input type="checkbox"
+                               class="selfCheck">
+                        My sentence matches the meaning.
+                    </label>
+
+                    <label class="check-row">
+                        <input type="checkbox"
+                               class="selfCheck">
+                        My sentence has a subject and a verb.
+                    </label>
+
+                </div>
+
+
+                <button class="btn btn-purple"
+                        style="margin-top:18px;"
+                        onclick="checkProduction()">
+                    Check My Sentence
+                </button>
+
+
+                <div id="productionFeedback"
+                     class="feedback">
+                </div>
+
+
+                <div id="modelAnswer"
+                     class="model-answer">
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- ===================================================
+        SCREEN 6 - RESULT
+        ==================================================== -->
+
+        <section class="screen" id="screen6">
+
+            <div class="card hero">
+
+                <div class="emoji">
+                    🏆
+                </div>
+
+                <span class="stage-label">
+                    Mission Complete
+                </span>
+
+                <h2>
+                    Great Work!
+                </h2>
+
+                <p class="subtitle" id="resultMessage">
+                </p>
+
+
+                <div class="score-circle">
+                    <div class="number"
+                         id="finalScore">
+                        0
+                    </div>
+
+                    <div class="label">
+                        POINTS
+                    </div>
+                </div>
+
+
+                <div class="result-grid">
+
+                    <div class="result-box">
+                        <strong id="correctResult">0</strong>
+                        Correct
+                    </div>
+
+                    <div class="result-box">
+                        <strong>6</strong>
+                        Expressions
+                    </div>
+
+                    <div class="result-box">
+                        <strong id="timeResult">0:00</strong>
+                        Time Used
+                    </div>
+
+                </div>
+
+
+                <h3>
+                    Final Review
+                </h3>
+
+                <div class="review-list">
+
+                    <div class="review-item">
+                        <strong>find out</strong>
+                        <span>discover information · 알아내다</span>
+                    </div>
+
+                    <div class="review-item">
+                        <strong>set up</strong>
+                        <span>create / organize something · 설치하다, 준비하다</span>
+                    </div>
+
+                    <div class="review-item">
+                        <strong>sort out</strong>
+                        <span>organize or solve · 분류하다, 해결하다</span>
+                    </div>
+
+                    <div class="review-item">
+                        <strong>pay attention to</strong>
+                        <span>notice or concentrate on · 주의를 기울이다</span>
+                    </div>
+
+                    <div class="review-item">
+                        <strong>come up with</strong>
+                        <span>think of an idea · 생각해 내다</span>
+                    </div>
+
+                    <div class="review-item">
+                        <strong>carry out</strong>
+                        <span>perform or complete a plan · 실행하다</span>
+                    </div>
+
+                </div>
+
+
+                <button class="btn btn-primary"
+                        onclick="restartApp()">
+                    ↻ Try Again
+                </button>
+
+            </div>
+
+        </section>
+
+
+    </main>
+
+</div>
+
+
+<script>
+
+/* =========================================================
+   DATA
+========================================================= */
+
+const expressions = {
+
+    "find out": {
+        korean: "알아내다 / 정보를 발견하다",
+        meaning: "to discover or get information",
+        example: "We want to find out how much plastic our school uses.",
+        hint: "What information do you want to discover?"
+    },
+
+    "set up": {
+        korean: "설치하다 / 준비하다 / 만들다",
+        meaning: "to create, organize, or prepare something",
+        example: "We set up recycling boxes in every classroom.",
+        hint: "What could you create or organize?"
+    },
+
+    "sort out": {
+        korean: "분류하다 / 정리하다 / 해결하다",
+        meaning: "to organize things or solve a problem",
+        example: "Students sort out paper and plastic.",
+        hint: "What things or problems could you organize?"
+    },
+
+    "pay attention to": {
+        korean: "주의를 기울이다",
+        meaning: "to notice or concentrate carefully on something",
+        example: "Please pay attention to the recycling signs.",
+        hint: "What should students notice carefully?"
+    },
+
+    "come up with": {
+        korean: "생각해 내다",
+        meaning: "to think of a new idea, answer, or plan",
+        example: "The students came up with a new recycling game.",
+        hint: "What new idea could you think of?"
+    },
+
+    "carry out": {
+        korean: "수행하다 / 실행하다",
+        meaning: "to do or complete a plan, task, or experiment",
+        example: "We will carry out the project next month.",
+        hint: "What plan or project could you perform?"
+    }
+
+};
+
+
+/* =========================================================
+   QUIZ DATA
+========================================================= */
+
+const meaningQuestions = [
+
+    {
+        meaning: "to discover information",
+        korean: "정보를 알아내다",
+        answer: "find out",
+        choices: [
+            "find out",
+            "set up",
+            "carry out",
+            "sort out"
+        ]
+    },
+
+    {
+        meaning: "to create or organize something",
+        korean: "무언가를 설치하거나 준비하다",
+        answer: "set up",
+        choices: [
+            "pay attention to",
+            "set up",
+            "find out",
+            "come up with"
+        ]
+    },
+
+    {
+        meaning: "to organize things or solve a problem",
+        korean: "정리하거나 문제를 해결하다",
+        answer: "sort out",
+        choices: [
+            "carry out",
+            "sort out",
+            "set up",
+            "find out"
+        ]
+    },
+
+    {
+        meaning: "to concentrate carefully on something",
+        korean: "무언가에 주의를 기울이다",
+        answer: "pay attention to",
+        choices: [
+            "come up with",
+            "sort out",
+            "pay attention to",
+            "carry out"
+        ]
+    },
+
+    {
+        meaning: "to think of a new idea",
+        korean: "새로운 생각을 생각해 내다",
+        answer: "come up with",
+        choices: [
+            "set up",
+            "find out",
+            "carry out",
+            "come up with"
+        ]
+    },
+
+    {
+        meaning: "to perform or complete a plan",
+        korean: "계획이나 일을 실행하다",
+        answer: "carry out",
+        choices: [
+            "carry out",
+            "pay attention to",
+            "sort out",
+            "set up"
+        ]
+    }
+
+];
+
+
+const contextQuestions = [
+
+    {
+        sentence:
+            "Mina wants to ______ how many plastic bottles students use every day.",
+        answer: "find out",
+        choices: [
+            "find out",
+            "set up",
+            "carry out",
+            "pay attention to"
+        ],
+        reason:
+            "She wants to discover information, so “find out” is the best choice."
+    },
+
+    {
+        sentence:
+            "The environmental club will ______ three recycling stations near the cafeteria.",
+        answer: "set up",
+        choices: [
+            "sort out",
+            "come up with",
+            "set up",
+            "find out"
+        ],
+        reason:
+            "They are creating and preparing recycling stations, so we use “set up.”"
+    },
+
+    {
+        sentence:
+            "Please ______ the labels before you throw away your trash.",
+        answer: "pay attention to",
+        choices: [
+            "carry out",
+            "pay attention to",
+            "set up",
+            "find out"
+        ],
+        reason:
+            "Students need to notice the labels carefully, so “pay attention to” fits."
+    },
+
+    {
+        sentence:
+            "The team needs to ______ a creative way to encourage more students to recycle.",
+        answer: "come up with",
+        choices: [
+            "sort out",
+            "find out",
+            "come up with",
+            "carry out"
+        ],
+        reason:
+            "They need to think of a new idea, so “come up with” is correct."
+    },
+
+    {
+        sentence:
+            "After planning for two weeks, the students are ready to ______ their recycling campaign.",
+        answer: "carry out",
+        choices: [
+            "set up",
+            "carry out",
+            "pay attention to",
+            "find out"
+        ],
+        reason:
+            "They are ready to actually perform the plan, so “carry out” is correct."
+    },
+
+    {
+        sentence:
+            "We need to ______ the paper, cans, and plastic before putting them in different bins.",
+        answer: "sort out",
+        choices: [
+            "sort out",
+            "set up",
+            "come up with",
+            "pay attention to"
+        ],
+        reason:
+            "The waste needs to be organized into groups, so “sort out” fits."
+    }
+
+];
+
+
+const missionQuestions = [
+
+    {
+        situation:
+            "Step 1: Before starting the project, your class wants to learn how much food students throw away.",
+        answer: "find out",
+        explanation:
+            "First, you need to discover information."
+    },
+
+    {
+        situation:
+            "Step 2: Now your class wants to place special recycling boxes in the hallway.",
+        answer: "set up",
+        explanation:
+            "You are creating and preparing the recycling system."
+    },
+
+    {
+        situation:
+            "Step 3: Students need to separate bottles, paper, and cans into the correct groups.",
+        answer: "sort out",
+        explanation:
+            "You need to organize the waste into categories."
+    },
+
+    {
+        situation:
+            "Step 4: Some students keep ignoring the signs on the recycling boxes.",
+        answer: "pay attention to",
+        explanation:
+            "They need to notice the signs carefully."
+    },
+
+    {
+        situation:
+            "Step 5: Your team needs a fun new idea to make more students recycle.",
+        answer: "come up with",
+        explanation:
+            "You need to think of a new idea."
+    },
+
+    {
+        situation:
+            "Step 6: Your plan is finished. Now it is time to actually do the project.",
+        answer: "carry out",
+        explanation:
+            "Now you perform the plan."
+    }
+
+];
+
+
+/* =========================================================
+   STATE
+========================================================= */
+
+let currentScreen = 0;
+
+let meaningIndex = 0;
+let contextIndex = 0;
+let missionIndex = 0;
+
+let score = 0;
+let correctAnswers = 0;
+
+let totalSeconds = 600;
+let timerInterval = null;
+let started = false;
+
+
+/* =========================================================
+   START / TIMER
+========================================================= */
+
+function startApp() {
+
+    if (!started) {
+
+        started = true;
+
+        timerInterval = setInterval(() => {
+
+            if (totalSeconds > 0) {
+                totalSeconds--;
+                updateTimer();
+            }
+
+        }, 1000);
+
+    }
+
+    goToScreen(1);
+}
+
+
+function updateTimer() {
+
+    const minutes =
+        Math.floor(totalSeconds / 60);
+
+    const seconds =
+        totalSeconds % 60;
+
+    const timer =
+        document.getElementById("timer");
+
+    timer.textContent =
+        `${minutes}:${seconds.toString().padStart(2,"0")}`;
+
+    timer.classList.remove(
+        "warning",
+        "danger"
+    );
+
+    if (totalSeconds <= 120) {
+        timer.classList.add("danger");
+    }
+
+    else if (totalSeconds <= 300) {
+        timer.classList.add("warning");
+    }
+
+}
+
+
+/* =========================================================
+   NAVIGATION
+========================================================= */
+
+function goToScreen(number) {
+
+    document
+        .querySelectorAll(".screen")
+        .forEach(screen =>
+            screen.classList.remove("active")
+        );
+
+    document
+        .getElementById("screen" + number)
+        .classList.add("active");
+
+    currentScreen = number;
+
+    updateProgress();
+
+    window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+    });
+
+    if (number === 2 && meaningIndex === 0) {
+        renderMeaningQuestion();
+    }
+
+    if (number === 3 && contextIndex === 0) {
+        renderContextQuestion();
+    }
+
+    if (number === 4 && missionIndex === 0) {
+        renderMission();
+    }
+
+}
+
+
+function updateProgress() {
+
+    const stages = [
+        "Ready",
+        "Explore",
+        "Meaning",
+        "Context",
+        "Mission",
+        "Create",
+        "Complete"
+    ];
+
+    const progressValues = [
+        0,
+        15,
+        32,
+        50,
+        70,
+        88,
+        100
+    ];
+
+    document.getElementById("stageText")
+        .textContent =
+        stages[currentScreen];
+
+    document.getElementById("progressBar")
+        .style.width =
+        progressValues[currentScreen] + "%";
+
+    document.getElementById("progressPercent")
+        .textContent =
+        progressValues[currentScreen] + "%";
+
+}
+
+
+/* =========================================================
+   STORY
+========================================================= */
+
+function showMeaning(element, expression) {
+
+    document
+        .querySelectorAll(".target")
+        .forEach(item =>
+            item.classList.remove("selected")
+        );
+
+    element.classList.add("selected");
+
+    const data =
+        expressions[expression];
+
+    document.getElementById("meaningDisplay")
+        .innerHTML = `
+            <div>
+                <strong>${expression}</strong><br>
+                ${data.meaning}<br>
+                <span class="korean">${data.korean}</span>
+                <br>
+                <em>Example: ${data.example}</em>
+            </div>
+        `;
+}
+
+
+/* =========================================================
+   MEANING QUIZ
+========================================================= */
+
+function renderMeaningQuestion() {
+
+    const q =
+        meaningQuestions[meaningIndex];
+
+    const container =
+        document.getElementById("meaningQuiz");
+
+    container.innerHTML = `
+
+        <div class="question-count">
+            Question ${meaningIndex + 1} / ${meaningQuestions.length}
+        </div>
+
+        <div class="question">
+
+            “${q.meaning}”
+
+            <span class="korean">
+                ${q.korean}
+            </span>
+
+        </div>
+
+        <div class="options">
+
+            ${q.choices.map(choice => `
+
+                <button class="option"
+                        onclick="answerMeaning(this,'${escapeQuote(choice)}')">
+
+                    ${choice}
+
+                </button>
+
+            `).join("")}
+
+        </div>
+
+        <div id="meaningFeedback"
+             class="feedback">
+        </div>
+
+    `;
+}
+
+
+function answerMeaning(button, choice) {
+
+    const q =
+        meaningQuestions[meaningIndex];
+
+    const buttons =
+        button.parentElement.querySelectorAll(".option");
+
+    buttons.forEach(btn =>
+        btn.disabled = true
+    );
+
+    const feedback =
+        document.getElementById("meaningFeedback");
+
+    if (choice === q.answer) {
+
+        button.classList.add("correct");
+
+        feedback.className =
+            "feedback correct show";
+
+        feedback.innerHTML =
+            `✅ Correct! <strong>${q.answer}</strong> means “${q.meaning}.”`;
+
+        score += 10;
+        correctAnswers++;
+
+    } else {
+
+        button.classList.add("wrong");
+
+        buttons.forEach(btn => {
+
+            if (
+                btn.textContent.trim() === q.answer
+            ) {
+                btn.classList.add("correct");
+            }
+
+        });
+
+        feedback.className =
+            "feedback wrong show";
+
+        feedback.innerHTML =
+            `Not quite. The correct answer is <strong>${q.answer}</strong>.`;
+
+    }
+
+
+    setTimeout(() => {
+
+        meaningIndex++;
+
+        if (
+            meaningIndex <
+            meaningQuestions.length
+        ) {
+
+            renderMeaningQuestion();
+
+        } else {
+
+            goToScreen(3);
+
+        }
+
+    }, 1200);
+
+}
+
+
+/* =========================================================
+   CONTEXT QUIZ
+========================================================= */
+
+function renderContextQuestion() {
+
+    const q =
+        contextQuestions[contextIndex];
+
+    const container =
+        document.getElementById("contextQuiz");
+
+    container.innerHTML = `
+
+        <div class="question-count">
+            Situation ${contextIndex + 1} / ${contextQuestions.length}
+        </div>
+
+        <div class="question">
+            ${q.sentence}
+        </div>
+
+        <div class="options">
+
+            ${q.choices.map(choice => `
+
+                <button class="option"
+                        onclick="answerContext(this,'${escapeQuote(choice)}')">
+
+                    ${choice}
+
+                </button>
+
+            `).join("")}
+
+        </div>
+
+        <div id="contextFeedback"
+             class="feedback">
+        </div>
+
+    `;
+}
+
+
+function answerContext(button, choice) {
+
+    const q =
+        contextQuestions[contextIndex];
+
+    const buttons =
+        button.parentElement
+        .querySelectorAll(".option");
+
+    buttons.forEach(btn =>
+        btn.disabled = true
+    );
+
+    const feedback =
+        document.getElementById("contextFeedback");
+
+
+    if (choice === q.answer) {
+
+        button.classList.add("correct");
+
+        feedback.className =
+            "feedback correct show";
+
+        feedback.innerHTML =
+            `✅ Correct! ${q.reason}`;
+
+        score += 15;
+        correctAnswers++;
+
+    }
+
+    else {
+
+        button.classList.add("wrong");
+
+        buttons.forEach(btn => {
+
+            if (
+                btn.textContent.trim()
+                === q.answer
+            ) {
+
+                btn.classList.add("correct");
+
+            }
+
+        });
+
+        feedback.className =
+            "feedback wrong show";
+
+        feedback.innerHTML =
+            `❌ The best expression is <strong>${q.answer}</strong>.<br>${q.reason}`;
+
+    }
+
+
+    setTimeout(() => {
+
+        contextIndex++;
+
+        if (
+            contextIndex <
+            contextQuestions.length
+        ) {
+
+            renderContextQuestion();
+
+        }
+
+        else {
+
+            goToScreen(4);
+
+        }
+
+    }, 1700);
+
+}
+
+
+/* =========================================================
+   MISSION
+========================================================= */
+
+function renderMission() {
+
+    const q =
+        missionQuestions[missionIndex];
+
+    const choices =
+        Object.keys(expressions);
+
+    document.getElementById("missionGame")
+        .innerHTML = `
+
+            <div class="question-count">
+                Mission ${missionIndex + 1} / ${missionQuestions.length}
+            </div>
+
+            <div class="scenario">
+                ${q.situation}
+            </div>
+
+            <p>
+                <strong>
+                    What should your class do?
+                </strong>
+            </p>
+
+            <div class="phrase-bank">
+
+                ${choices.map(choice => `
+
+                    <button class="phrase-chip"
+                            onclick="answerMission(this,'${escapeQuote(choice)}')">
+
+                        ${choice}
+
+                    </button>
+
+                `).join("")}
+
+            </div>
+
+            <div id="missionFeedback"
+                 class="feedback">
+            </div>
+
+        `;
+
+}
+
+
+function answerMission(button, choice) {
+
+    const q =
+        missionQuestions[missionIndex];
+
+    const buttons =
+        document
+        .querySelectorAll(".phrase-chip");
+
+    buttons.forEach(btn =>
+        btn.disabled = true
+    );
+
+    const feedback =
+        document.getElementById("missionFeedback");
+
+
+    if (choice === q.answer) {
+
+        button.classList.add("correct");
+
+        feedback.className =
+            "feedback correct show";
+
+        feedback.innerHTML =
+            `🌟 Excellent! <strong>${q.answer}</strong> is right.<br>${q.explanation}`;
+
+        score += 20;
+        correctAnswers++;
+
+    }
+
+    else {
+
+        button.classList.add("wrong");
+
+        buttons.forEach(btn => {
+
+            if (
+                btn.textContent.trim()
+                === q.answer
+            ) {
+                btn.classList.add("correct");
+            }
+
+        });
+
+        feedback.className =
+            "feedback wrong show";
+
+        feedback.innerHTML =
+            `Try to remember the situation.<br>
+             The best answer is <strong>${q.answer}</strong>.
+             ${q.explanation}`;
+
+    }
+
+
+    setTimeout(() => {
+
+        missionIndex++;
+
+        if (
+            missionIndex <
+            missionQuestions.length
+        ) {
+
+            renderMission();
+
+        }
+
+        else {
+
+            goToScreen(5);
+
+        }
+
+    }, 1600);
+
+}
+
+
+/* =========================================================
+   WRITING
+========================================================= */
+
+function updateWritingHint() {
+
+    const choice =
+        document
+        .getElementById("finalExpression")
+        .value;
+
+    const hint =
+        document
+        .getElementById("writingHint");
+
+    if (!choice) {
+
+        hint.classList.add("hidden");
+        return;
+
+    }
+
+    hint.classList.remove("hidden");
+
+    hint.innerHTML = `
+
+        <strong>${choice}</strong>
+        = ${expressions[choice].meaning}
+
+        <span class="korean">
+            ${expressions[choice].korean}
+        </span>
+
+        <br><br>
+
+        💭 Think:
+        ${expressions[choice].hint}
+
+    `;
+
+}
+
+
+function addText(text) {
+
+    const area =
+        document
+        .getElementById("studentSentence");
+
+    area.value += text;
+
+    area.focus();
+
+}
+
+
+function checkProduction() {
+
+    const expression =
+        document
+        .getElementById("finalExpression")
+        .value;
+
+    const sentence =
+        document
+        .getElementById("studentSentence")
+        .value
+        .trim();
+
+    const feedback =
+        document
+        .getElementById("productionFeedback");
+
+    const model =
+        document
+        .getElementById("modelAnswer");
+
+    if (!expression) {
+
+        feedback.className =
+            "feedback wrong show";
+
+        feedback.innerHTML =
+            "Please choose one target expression first.";
+
+        return;
+
+    }
+
+    if (sentence.length < 10) {
+
+        feedback.className =
+            "feedback wrong show";
+
+        feedback.innerHTML =
+            "Please write a complete sentence before checking.";
+
+        return;
+
+    }
+
+
+    const normalizedSentence =
+        sentence.toLowerCase();
+
+    const baseForm =
+        expression.toLowerCase();
+
+    let expressionUsed = false;
+
+
+    if (
+        normalizedSentence.includes(baseForm)
+    ) {
+
+        expressionUsed = true;
+
+    }
+
+
+    if (
+        expression === "come up with" &&
+        normalizedSentence.includes("came up with")
+    ) {
+
+        expressionUsed = true;
+
+    }
+
+
+    if (
+        expression === "find out" &&
+        (
+            normalizedSentence.includes("found out") ||
+            normalizedSentence.includes("find out")
+        )
+    ) {
+
+        expressionUsed = true;
+
+    }
+
+
+    if (
+        expression === "set up" &&
+        normalizedSentence.includes("set up")
+    ) {
+
+        expressionUsed = true;
+
+    }
+
+
+    if (
+        expression === "carry out" &&
+        (
+            normalizedSentence.includes("carry out") ||
+            normalizedSentence.includes("carried out")
+        )
+    ) {
+
+        expressionUsed = true;
+
+    }
+
+
+    if (
+        expression === "sort out" &&
+        (
+            normalizedSentence.includes("sort out") ||
+            normalizedSentence.includes("sorted out")
+        )
+    ) {
+
+        expressionUsed = true;
+
+    }
+
+
+    if (
+        expression === "pay attention to" &&
+        (
+            normalizedSentence.includes("pay attention to") ||
+            normalizedSentence.includes("paid attention to")
+        )
+    ) {
+
+        expressionUsed = true;
+
+    }
+
+
+    if (!expressionUsed) {
+
+        feedback.className =
+            "feedback wrong show";
+
+        feedback.innerHTML = `
+
+            Almost! Try to include
+            <strong>${expression}</strong>
+            in your sentence.
+
+        `;
+
+        return;
+
+    }
+
+
+    const checks =
+        document.querySelectorAll(".selfCheck");
+
+    const checkedCount =
+        [...checks]
+        .filter(c => c.checked)
+        .length;
+
+
+    feedback.className =
+        "feedback correct show";
+
+    feedback.innerHTML = `
+
+        ✅ Nice work!
+
+        You used <strong>${expression}</strong>
+        in your own sentence.
+
+        ${
+            checkedCount < 3
+            ? "<br><br>Before finishing, look at the self-check list one more time."
+            : "<br><br>You also completed the self-check. Excellent!"
+        }
+
+    `;
+
+
+    model.style.display =
+        "block";
+
+    model.innerHTML = `
+
+        <strong>Example sentence:</strong><br>
+
+        ${expressions[expression].example}
+
+        <br><br>
+
+        <strong>Your sentence:</strong><br>
+
+        ${escapeHTML(sentence)}
+
+    `;
+
+
+    score += 25;
+
+    setTimeout(
+        finishGame,
+        2500
+    );
+
+}
+
+
+/* =========================================================
+   RESULT
+========================================================= */
+
+function finishGame() {
+
+    clearInterval(timerInterval);
+
+    goToScreen(6);
+
+
+    const used =
+        600 - totalSeconds;
+
+    const minutes =
+        Math.floor(used / 60);
+
+    const seconds =
+        used % 60;
+
+
+    document
+        .getElementById("timeResult")
+        .textContent =
+        `${minutes}:${seconds.toString().padStart(2,"0")}`;
+
+
+    document
+        .getElementById("correctResult")
+        .textContent =
+        correctAnswers;
+
+
+    document
+        .getElementById("finalScore")
+        .textContent =
+        score;
+
+
+    let message = "";
+
+
+    if (score >= 250) {
+
+        message =
+            "Amazing! You can understand and use the expressions very well.";
+
+    }
+
+    else if (score >= 180) {
+
+        message =
+            "Nice job! You understand most of the expressions. Review any expressions that were difficult.";
+
+    }
+
+    else {
+
+        message =
+            "Good effort! Review the six expressions and try the mission again.";
+
+    }
+
+
+    document
+        .getElementById("resultMessage")
+        .textContent =
+        message;
+
+}
+
+
+/* =========================================================
+   RESTART
+========================================================= */
+
+function restartApp() {
+
+    clearInterval(timerInterval);
+
+    currentScreen = 0;
+
+    meaningIndex = 0;
+    contextIndex = 0;
+    missionIndex = 0;
+
+    score = 0;
+    correctAnswers = 0;
+
+    totalSeconds = 600;
+
+    started = false;
+
+
+    document
+        .getElementById("studentSentence")
+        .value = "";
+
+    document
+        .getElementById("finalExpression")
+        .value = "";
+
+    document
+        .getElementById("productionFeedback")
+        .className =
+        "feedback";
+
+    document
+        .getElementById("modelAnswer")
+        .style.display =
+        "none";
+
+
+    document
+        .querySelectorAll(".selfCheck")
+        .forEach(check =>
+            check.checked = false
+        );
+
+
+    updateTimer();
+
+    goToScreen(0);
+
+}
+
+
+/* =========================================================
+   HELPERS
+========================================================= */
+
+function escapeQuote(text) {
+
+    return text
+        .replace(/'/g, "\\'");
+
+}
+
+
+function escapeHTML(text) {
+
+    const div =
+        document.createElement("div");
+
+    div.textContent =
+        text;
+
+    return div.innerHTML;
+
+}
+
+
+/* INITIAL STATE */
+
+updateProgress();
+updateTimer();
+
+</script>
+
+</body>
+</html>
